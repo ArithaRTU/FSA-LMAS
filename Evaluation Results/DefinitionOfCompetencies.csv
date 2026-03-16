@@ -1,0 +1,809 @@
+fractal_unit_folder,execution_id,node_name,level,node_label,node_key_name,node_key_value,generator_model_used,agent_role_assigned,evaluation_metrics_defined,evaluation_score,evaluation_passed,propagated,propagation_source_execution_id,timestamp_utc
+bfu_business-analytics-with-machine-learning_6f026d24-3f14-4888-b24f-242ef028bb23,6f026d24-3f14-4888-b24f-242ef028bb23,Business Analytics with Machine Learning,Course,RTUCourse,RTUCourseCode,DE0940,gpt-4.1,"You are the Generator agent producing ONLY canonical_graph_mutations_v1 JSON.
+
+Task (ONE RTUCourse node): Define 4–8 student competencies as nodes (label: Competency) and connect them to the course via rel_type ""defines_competency"".
+
+Primary focus: competencies that guide students to SELECT and ENGAGE WITH RESEARCH ARTICLES as learning resources.
+
+Hard constraints (non-negotiable):
+1) Output exactly ONE JSON object with top-level keys: answer_text, graph_mutations.
+2) graph_mutations MUST contain arrays: updates, create_nodes, create_relationships, delete_nodes (present even if empty).
+3) You may ONLY create nodes with label: Competency.
+4) Each Competency node MUST have ONLY these properties: id, label, description.
+   - id: deterministic, globally unique, and must include the course code in lowercase, e.g., ""comp:rtucourse:de0706:<slug>"".
+   - label: short, human-readable (3–10 words).
+   - description: 1–2 sentences with observable performance + explicit artifact/criteria (e.g., ""retrieve ≥8 peer-reviewed articles"", ""produce inclusion/exclusion criteria"", ""create a synthesis matrix"", ""replicate a figure"", ""document threats to validity"").
+5) Always create RTUCourse -> Competency edges:
+   - source: {label:""RTUCourse"", key_name:""RTUCourseCode"", key_value:""<COURSE_CODE>""}
+   - target: {label:""Competency"", key_name:""id"", key_value:""<competency id>""}
+   - rel_type: ""defines_competency""
+6) ResearchArticle linking is OPTIONAL and DISABLED by default.
+   - Do NOT create any Competency↔ResearchArticle relationships unless ResearchArticle nodes are explicitly provided in the current input context (not inferred from logs) with a reliable key you can reference.
+   - If and only if they are explicitly present, create Competency -> ResearchArticle links using rel_type only ""can_be_learned_by"" or ""is_demonstrated_by"", and reference the article by key_name ""Title"" (exact match).
+
+Content requirements (each set must cover):
+- Article search & selection (queries + inclusion/exclusion)
+- Quality/method appraisal (peer-review status, method fit, limitations)
+- Evidence extraction (claims, operationalizations, data/analysis)
+- Method/application (apply course methods using cited literature)
+- Synthesis & argumentation (compare findings; synthesis matrix)
+- Academic integrity (correct citation + avoiding plagiarism)
+
+answer_text: 4–8 bullets, each bullet = competency label + 1-line outcome. Must match created nodes exactly.","Strict canonical_graph_mutations_v1 packaging: exactly {answer_text, graph_mutations:{updates,create_nodes,create_relationships,delete_nodes}}; no wrappers or extra keys. | Competency node schema: label=Competency and properties ONLY {id,label,description}; ids deterministic and include lowercase course code; all ids unique. | Actionability: every description includes an observable artifact and measurable criteria (e.g., minimum number of articles, explicit appraisal dimensions, required outputs like annotated bibliography/synthesis matrix/replication report). | Course linkage completeness: one defines_competency edge from the RTUCourse to each created competency, keyed by RTUCourseCode -> Competency.id. | ResearchArticle linking discipline: no competency↔article relationships unless article nodes are explicitly present in current input context; if present, link Competency -> ResearchArticle by Title and only with rel_type can_be_learned_by/is_demonstrated_by. | Internal consistency: answer_text enumerates exactly the created competency ids/labels (no extras), and all relationship targets exist in create_nodes (no typos/mismatches).",0.78,False,True,863bd1f7-126b-4451-8ef1-1c284c52c201,2026-03-16T13:30:51.188533+00:00
+bfu_business-analytics-with-machine-learning_863bd1f7-126b-4451-8ef1-1c284c52c201,863bd1f7-126b-4451-8ef1-1c284c52c201,Business Analytics with Machine Learning,Course,RTUCourse,RTUCourseCode,DE0940,gpt-4.1,"You are the Generator agent producing graph mutations in the canonical_graph_mutations_v1 JSON format.
+
+Context
+- You are operating on ONE curriculum node: an RTUCourse.
+- Course: RTUCourseCode=DE0940, RTUCourseTitle=""Business Analytics with Machine Learning"".
+- Program context: Master program ""Business Informatics"".
+
+Task
+Define student competencies as Competency nodes and connect them to this course with relationships of type ""defines_competency"".
+
+Focus
+- Competencies must be directly useful for guiding students to select, read, evaluate, and apply research articles in business analytics and machine learning.
+- Prioritize competencies that can be directly linked to research articles as learning resources.
+- If relevant, connect competencies to existing ResearchArticle nodes (already in the graph) using relationship types like ""can_be_learned_by"" or ""is_demonstrated_by"".
+
+Existing related ResearchArticle nodes (may exist in the graph; link if present by these ids):
+- id=""crispdm_2000_wirth_hipp""
+- id=""sculley_2015_ml_tech_debt""
+- id=""doshi_velez_kim_2017_intpretable_ml""
+
+Requirements
+- Create 5–8 competencies.
+- Each competency must be specific and actionable, written as an ability statement using an observable verb (e.g., ""Formulate"", ""Critically appraise"", ""Design"", ""Justify"", ""Replicate"", ""Report"").
+- Each competency must include:
+  - label: ""Competency""
+  - properties: { id, Label, Description }
+    - id: stable unique id (snake_case; include course code DE0940)
+    - Label: short name (3–10 words)
+    - Description: 1–2 sentences, measurable (what the student can do; include criteria like using appropriate baselines, identifying leakage, etc.)
+- Create ""defines_competency"" relationships from the RTUCourse (match by RTUCourseCode=DE0940) to each Competency (match by id).
+- Optionally create relationships from Competency to ResearchArticle (match by ResearchArticle id) using ONLY rel_type values ""can_be_learned_by"" or ""is_demonstrated_by"".
+- Do not modify the RTUCourse node properties.
+- Do not delete any nodes.
+- Output exactly one JSON object in canonical_graph_mutations_v1 with answer_text and graph_mutations (updates/create_nodes/create_relationships/delete_nodes).
+
+Quality and safety
+- Do not invent article nodes or assume additional articles exist beyond the listed ids.
+- If you are not confident a ResearchArticle id exists, you may still create the relationship (the downstream system will resolve), but do not fabricate bibliographic properties.
+- Ensure competencies align to ML project lifecycle for business value: problem framing, data, modeling, evaluation, interpretability, deployment/monitoring, and communicating findings with evidence from research.
+
+answer_text
+- Provide a brief bulleted summary (5–8 bullets) listing the competencies by Label and what they enable for research-article-driven learning.","Output is valid canonical_graph_mutations_v1 JSON with exactly the required top-level keys and graph_mutations arrays (updates, create_nodes, create_relationships, delete_nodes). | Creates 5–8 new nodes with label ""Competency""; each has properties exactly including id, Label, Description (no missing id; no empty strings). | Each Competency id is unique, stable, snake_case, and includes ""de0940"" to avoid collisions across courses. | Each competency is specific, actionable, and measurable (observable verb; describes performance criteria such as baselines, leakage checks, reproducibility, or interpretability justification). | For every created Competency node, there is a corresponding defines_competency relationship from RTUCourse (RTUCourseCode=DE0940) to that Competency (matched by id). | Optional competency-to-article relationships (if present) use only rel_type ""can_be_learned_by"" or ""is_demonstrated_by"" and target ResearchArticle nodes only by the provided ids; no new ResearchArticle nodes are created. | No RTUCourse properties are modified; no nodes are deleted. | Competencies are tightly relevant to selecting, engaging with, and applying research articles in business analytics and ML lifecycle (not generic ML skills). | answer_text concisely maps each competency to how it supports research-article-driven learning without unverifiable claims.",0.66,False,False,,2026-03-16T13:12:52.280335+00:00
+bfu_business-sociology_c7b7279a-36e1-4964-abb9-f3c168357aea,c7b7279a-36e1-4964-abb9-f3c168357aea,Business Sociology,Course,RTUCourse,RTUCourseCode,DE0425,gpt-4.1,"You are the Generator agent for ONE curriculum node enrichment task, producing graph mutations ONLY in the canonical_graph_mutations_v1 JSON format.
+
+Context:
+- You are given ONE node of type RTUCourse (and may also see its parent RTUProgram/RTUStudyField in context). 
+- The user wants COMPETENCIES for the given course/programs as Competency nodes connected via defines_competency.
+- Focus: competencies that guide students to select, evaluate, and use RESEARCH ARTICLES as learning resources, and to demonstrate learning via engagement with those articles.
+
+Task:
+1) Create (or update if already present in the graph context) 4–8 competency nodes for the provided RTUCourse. Make them specific, observable, and actionable.
+2) Each competency node MUST:
+   - Have label: Competency
+   - Include properties.id (unique, stable), and properties.label (human-readable unique label).
+   - Optionally include properties.description (1–2 sentences) ONLY if your system allows arbitrary properties on Competency; if uncertain, include only id and label.
+3) Create a relationship of type defines_competency from the RTUCourse node (keyed by RTUCourseCode) to each Competency node.
+4) If relevant research articles already exist in the provided context (nodes of label ResearchArticle), you MAY add relationships from Competency to ResearchArticle using rel_type exactly one of:
+   - can_be_learned_by
+   - is_demonstrated_by
+   Only add these links when the mapping is strong and unambiguous.
+5) Do NOT create or modify ResearchArticle nodes in this task unless explicitly required; focus on competencies.
+
+ID rules:
+- Competency properties.id must be unique and stable, derived from the course code plus a short slug, e.g., ""comp:DE0425:embeddedness-article-analysis"".
+- Competency properties.label must be unique within this course and written as an ability statement (start with an action verb).
+
+Update rules:
+- If you see existing Competency nodes for this course in the graph context, update them via graph_mutations.updates to be more specific/actionable and aligned to research-article selection/engagement.
+- If you do NOT see existing competency nodes in context, create new ones.
+
+Quality constraints:
+- Competencies must be assessable (what the student can do), not vague topics.
+- Prioritize competencies that can be directly supported by research articles (finding, screening, reading, extracting arguments, comparing findings, applying theory, ethical citation).
+- Avoid inventing unknown graph entities. Only link to ResearchArticle nodes that are explicitly present in the given input context.
+
+Output constraints:
+- Output exactly one JSON object with top-level keys: answer_text, graph_mutations.
+- graph_mutations must include arrays: updates, create_nodes, create_relationships, delete_nodes (use empty arrays if none).
+- When connecting to a created Competency node, reference it by label Competency with key_name ""id"" and the exact id used in create_nodes.
+- When connecting to an existing ResearchArticle node, reference it by label ResearchArticle with key_name ""Title"" (unless the input context clearly indicates a different key is required).","Relevance: Competencies directly support selecting, evaluating, reading, synthesizing, and ethically using research articles in the context of Business Sociology (business as social institution, consequences, entrepreneur portrait). | Actionability: Each competency is an observable skill with clear performance (e.g., screen articles by criteria, extract theoretical constructs, compare empirical findings). | Coverage balance: Competencies span the full research-article engagement cycle (search/selection, critical appraisal, theory application, synthesis, citation/ethics) without being redundant. | Graph correctness: Each Competency node has a unique properties.id and properties.label; defines_competency relationships correctly connect from RTUCourse(DE0425) to each Competency. | Linking discipline: Competency→ResearchArticle links are added only when the referenced ResearchArticle nodes are explicitly present in the provided context; no fabricated article nodes or references. | Schema compliance: Output strictly matches canonical_graph_mutations_v1 with required arrays present; no extra top-level keys; relationship directions and key references are consistent with created nodes.",0.38,False,False,,2026-03-16T13:25:21.796622+00:00
+bfu_business-sociology_fd78c2c6-761e-44b5-8bb2-390fc8358f97,fd78c2c6-761e-44b5-8bb2-390fc8358f97,Business Sociology,Course,RTUCourse,RTUCourseCode,DE0425,gpt-4.1,"You are the Generator agent producing ONLY canonical_graph_mutations_v1 JSON.
+
+Task (ONE RTUCourse node): Define 4–8 student competencies as nodes (label: Competency) and connect them to the course via rel_type ""defines_competency"".
+
+Primary focus: competencies that guide students to SELECT and ENGAGE WITH RESEARCH ARTICLES as learning resources.
+
+Hard constraints (non-negotiable):
+1) Output exactly ONE JSON object with top-level keys: answer_text, graph_mutations.
+2) graph_mutations MUST contain arrays: updates, create_nodes, create_relationships, delete_nodes (present even if empty).
+3) You may ONLY create nodes with label: Competency.
+4) Each Competency node MUST have ONLY these properties: id, label, description.
+   - id: deterministic, globally unique, and must include the course code in lowercase, e.g., ""comp:rtucourse:de0706:<slug>"".
+   - label: short, human-readable (3–10 words).
+   - description: 1–2 sentences with observable performance + explicit artifact/criteria (e.g., ""retrieve ≥8 peer-reviewed articles"", ""produce inclusion/exclusion criteria"", ""create a synthesis matrix"", ""replicate a figure"", ""document threats to validity"").
+5) Always create RTUCourse -> Competency edges:
+   - source: {label:""RTUCourse"", key_name:""RTUCourseCode"", key_value:""<COURSE_CODE>""}
+   - target: {label:""Competency"", key_name:""id"", key_value:""<competency id>""}
+   - rel_type: ""defines_competency""
+6) ResearchArticle linking is OPTIONAL and DISABLED by default.
+   - Do NOT create any Competency↔ResearchArticle relationships unless ResearchArticle nodes are explicitly provided in the current input context (not inferred from logs) with a reliable key you can reference.
+   - If and only if they are explicitly present, create Competency -> ResearchArticle links using rel_type only ""can_be_learned_by"" or ""is_demonstrated_by"", and reference the article by key_name ""Title"" (exact match).
+
+Content requirements (each set must cover):
+- Article search & selection (queries + inclusion/exclusion)
+- Quality/method appraisal (peer-review status, method fit, limitations)
+- Evidence extraction (claims, operationalizations, data/analysis)
+- Method/application (apply course methods using cited literature)
+- Synthesis & argumentation (compare findings; synthesis matrix)
+- Academic integrity (correct citation + avoiding plagiarism)
+
+answer_text: 4–8 bullets, each bullet = competency label + 1-line outcome. Must match created nodes exactly.","Strict canonical_graph_mutations_v1 packaging: exactly {answer_text, graph_mutations:{updates,create_nodes,create_relationships,delete_nodes}}; no wrappers or extra keys. | Competency node schema: label=Competency and properties ONLY {id,label,description}; ids deterministic and include lowercase course code; all ids unique. | Actionability: every description includes an observable artifact and measurable criteria (e.g., minimum number of articles, explicit appraisal dimensions, required outputs like annotated bibliography/synthesis matrix/replication report). | Course linkage completeness: one defines_competency edge from the RTUCourse to each created competency, keyed by RTUCourseCode -> Competency.id. | ResearchArticle linking discipline: no competency↔article relationships unless article nodes are explicitly present in current input context; if present, link Competency -> ResearchArticle by Title and only with rel_type can_be_learned_by/is_demonstrated_by. | Internal consistency: answer_text enumerates exactly the created competency ids/labels (no extras), and all relationship targets exist in create_nodes (no typos/mismatches).",0.74,True,True,c7b7279a-36e1-4964-abb9-f3c168357aea,2026-03-16T13:36:23.840479+00:00
+bfu_computer-technologies-in-telecommunications_03b6603d-a70e-4510-9ed6-93ef7e52217b,03b6603d-a70e-4510-9ed6-93ef7e52217b,Computer Technologies in Telecommunications,Course,RTUCourse,RTUCourseCode,DE0113,gpt-4.1,"You are the Generator agent producing ONLY canonical_graph_mutations_v1 JSON.
+
+Task (ONE RTUCourse node): Define 4–8 student competencies as nodes (label: Competency) and connect them to the course via rel_type ""defines_competency"".
+
+Primary focus: competencies that guide students to SELECT and ENGAGE WITH RESEARCH ARTICLES as learning resources.
+
+Hard constraints (non-negotiable):
+1) Output exactly ONE JSON object with top-level keys: answer_text, graph_mutations.
+2) graph_mutations MUST contain arrays: updates, create_nodes, create_relationships, delete_nodes (present even if empty).
+3) You may ONLY create nodes with label: Competency.
+4) Each Competency node MUST have ONLY these properties: id, label, description.
+   - id: deterministic, globally unique, and must include the course code in lowercase, e.g., ""comp:rtucourse:de0706:<slug>"".
+   - label: short, human-readable (3–10 words).
+   - description: 1–2 sentences with observable performance + explicit artifact/criteria (e.g., ""retrieve ≥8 peer-reviewed articles"", ""produce inclusion/exclusion criteria"", ""create a synthesis matrix"", ""replicate a figure"", ""document threats to validity"").
+5) Always create RTUCourse -> Competency edges:
+   - source: {label:""RTUCourse"", key_name:""RTUCourseCode"", key_value:""<COURSE_CODE>""}
+   - target: {label:""Competency"", key_name:""id"", key_value:""<competency id>""}
+   - rel_type: ""defines_competency""
+6) ResearchArticle linking is OPTIONAL and DISABLED by default.
+   - Do NOT create any Competency↔ResearchArticle relationships unless ResearchArticle nodes are explicitly provided in the current input context (not inferred from logs) with a reliable key you can reference.
+   - If and only if they are explicitly present, create Competency -> ResearchArticle links using rel_type only ""can_be_learned_by"" or ""is_demonstrated_by"", and reference the article by key_name ""Title"" (exact match).
+
+Content requirements (each set must cover):
+- Article search & selection (queries + inclusion/exclusion)
+- Quality/method appraisal (peer-review status, method fit, limitations)
+- Evidence extraction (claims, operationalizations, data/analysis)
+- Method/application (apply course methods using cited literature)
+- Synthesis & argumentation (compare findings; synthesis matrix)
+- Academic integrity (correct citation + avoiding plagiarism)
+
+answer_text: 4–8 bullets, each bullet = competency label + 1-line outcome. Must match created nodes exactly.","Strict canonical_graph_mutations_v1 packaging: exactly {answer_text, graph_mutations:{updates,create_nodes,create_relationships,delete_nodes}}; no wrappers or extra keys. | Competency node schema: label=Competency and properties ONLY {id,label,description}; ids deterministic and include lowercase course code; all ids unique. | Actionability: every description includes an observable artifact and measurable criteria (e.g., minimum number of articles, explicit appraisal dimensions, required outputs like annotated bibliography/synthesis matrix/replication report). | Course linkage completeness: one defines_competency edge from the RTUCourse to each created competency, keyed by RTUCourseCode -> Competency.id. | ResearchArticle linking discipline: no competency↔article relationships unless article nodes are explicitly present in current input context; if present, link Competency -> ResearchArticle by Title and only with rel_type can_be_learned_by/is_demonstrated_by. | Internal consistency: answer_text enumerates exactly the created competency ids/labels (no extras), and all relationship targets exist in create_nodes (no typos/mismatches).",0.86,True,True,b51692df-5884-4c27-9984-0dd724976259,2026-03-16T13:35:51.816378+00:00
+bfu_computer-technologies-in-telecommunications_b51692df-5884-4c27-9984-0dd724976259,b51692df-5884-4c27-9984-0dd724976259,Computer Technologies in Telecommunications,Course,RTUCourse,RTUCourseCode,DE0113,gpt-4.1,"You are the Generator agent for a curriculum knowledge-graph enrichment task focused on competencies for one node: an RTUCourse.
+
+You receive:
+- The RTUCourse node (code, title, annotation)
+- Optional higher-level context (program and field descriptions)
+- Potentially existing ResearchArticle nodes already linked to the course
+
+Your job:
+1) Define a small set of competency nodes that this course defines.
+2) Each competency must be specific, observable, and actionable, and MUST be relevant to guiding students to select, read, evaluate, and use research articles (especially in telecom/IT domains).
+3) Connect each competency to the RTUCourse with a relationship of type 'defines_competency'.
+4) If relevant and if ResearchArticle nodes exist in the provided context, add relationships between competencies and those ResearchArticle nodes using one of these relationship types:
+   - 'can_be_learned_by' (competency -> ResearchArticle)
+   - 'is_demonstrated_by' (competency -> ResearchArticle)
+
+Graph constraints:
+- Output MUST be exactly canonical_graph_mutations_v1 JSON.
+- You MAY create nodes of label 'Competency'.
+- Competency node properties MUST include:
+  - id (unique, stable string; use a predictable pattern, e.g., ""comp_DE0113_<slug>"" for courses)
+  - label (short unique human-readable label)
+  - description (1–3 sentences describing measurable behavior)
+- Do not modify RTUCourse properties.
+- Only add updates if you are provided existing Competency nodes and can improve them (more specific/actionable). If no existing competencies are provided, create new ones.
+- Create relationships:
+  - RTUCourse -> Competency with rel_type 'defines_competency'
+  - Competency -> ResearchArticle (only if those ResearchArticle nodes are present in the context; do not invent new ResearchArticle nodes in this task)
+
+Content requirements (course-specific):
+- Tailor competencies to the course 'Computer Technologies in Telecommunications' and its themes: data analysis, database management, containers, web technologies, cloud computing, security, service-oriented architectures, and telecom domain examples.
+- Prioritize competencies that map cleanly to research-article-driven learning (e.g., ability to formulate search queries, assess empirical methodology, extract architecture/security implications, compare systems papers, and justify technology choices using evidence).
+- Produce 5–8 competencies max; avoid vague items (e.g., “understand cloud”).
+
+In answer_text:
+- Provide a brief bullet list of the competencies (label + one-line outcome).
+
+Non-hallucination and linking:
+- Only link competencies to ResearchArticle nodes that exist in the provided context_chain / logs. Reference them by label 'ResearchArticle' and key_name 'Title' with the exact Title string.
+- If no ResearchArticle nodes are available in context, omit those competency->article relationships.
+
+Return only the canonical_graph_mutations_v1 JSON object.","Output is valid canonical_graph_mutations_v1 JSON with exactly the required top-level keys and required graph_mutations keys (updates, create_nodes, create_relationships, delete_nodes). | All created competency nodes have label 'Competency' and include properties id, label, description; ids are unique and stable (course-scoped pattern comp_<CourseCode>_<slug>). | Each competency is specific, observable, and actionable (uses measurable verbs; includes clear performance criteria such as selecting, evaluating, synthesizing, justifying, extracting, comparing). | All competencies are strongly aligned to research-article selection and engagement within the course domain (telecom IT: data analysis, databases, containers, web/cloud, security, SOA). | For every created/updated Competency, there is a 'defines_competency' relationship from the RTUCourse (matched by RTUCourseCode) to the Competency (matched by id). | No RTUCourse properties are modified; updates only target existing Competency nodes if such nodes are explicitly present in the given input context. | Competency-to-ResearchArticle relationships are created only if ResearchArticle nodes are present in context; targets are referenced by label ResearchArticle and key_name Title with exact Title; no fabricated articles are introduced. | The set of competencies is concise (5–8) and covers the major course themes without redundancy; each competency can plausibly be supported by reading at least one systems/security/data/cloud research article.",0.62,False,False,,2026-03-16T13:24:05.942520+00:00
+bfu_data-mining-and-knowledge-discovery_1c7931cc-b300-4de1-a217-18abd860df43,1c7931cc-b300-4de1-a217-18abd860df43,Data Mining and Knowledge Discovery,Course,RTUCourse,RTUCourseCode,DE0642,gpt-4.1,"You are the Generator for a curriculum knowledge-graph enrichment task focused on research-reading competencies.
+
+Context:
+- You are given ONE curriculum node: an RTUCourse (with RTUCourseCode, RTUCourseTitle, RTUCourseAnnotation) within a broader program/field context.
+- The user wants competencies that guide students toward selecting, reading, evaluating, and applying research articles as learning resources.
+- Competencies must be represented as competency nodes connected to the course by a relationship type: defines_competency.
+- If relevant, link competencies to existing ResearchArticle nodes (that already exist in the graph) using relationships like can_be_learned_by or is_demonstrated_by.
+
+Your task:
+1) Create 6–10 actionable, assessable competencies for this RTUCourse, tightly aligned to the course annotation topics (data preprocessing; classification; clustering; short time series; sequential/sequence pattern mining; fuzzy logic; swarm intelligence; applications) and explicitly oriented around engaging with research literature.
+2) Each competency must be:
+   - Specific and observable (use strong action verbs: identify, compare, reproduce, implement, critique, design, justify).
+   - Suitable for being supported by research articles (e.g., competencies about interpreting experimental methodology, baselines, evaluation metrics, reproducibility, limitations, ethical considerations in data mining).
+   - Avoid vague outcomes (e.g., “understand data mining”).
+3) Graph actions:
+   - Create nodes with label Competency (unless the system’s ontology dictates another exact label; if uncertain, use Competency).
+   - Each competency node must have a unique id and a human-readable label/title property. Use consistent properties:
+       id: a unique stable string (e.g., COMP_DE0642_01_...)
+       Label: a short name
+       Description: a 1–2 sentence actionable statement including performance criteria and research-article engagement.
+     If the graph schema seems to require different property names, still include at least id plus a clear label-like property and a description-like property.
+   - Create defines_competency relationships from the RTUCourse (by RTUCourseCode when present) to each competency.
+4) Linking to ResearchArticle nodes:
+   - Only create can_be_learned_by / is_demonstrated_by links if you can confidently reference an existing ResearchArticle by an unambiguous key present in the input context (e.g., Title or id if shown). Do NOT invent new articles in this task.
+   - If ResearchArticle nodes exist in the course context (e.g., previously created recommended readings), you may connect the most relevant competencies to those articles.
+5) If competencies already exist (not shown unless provided), update them to be more specific/actionable rather than duplicating. Only update when you can identify the existing competency nodes by a key in the provided context.
+
+Output requirements:
+- Output MUST be a single JSON object in canonical_graph_mutations_v1 format.
+- Put new competency nodes in graph_mutations.create_nodes.
+- Put relationships in graph_mutations.create_relationships.
+- Put any competency refinements in graph_mutations.updates ONLY when the target node is clearly identifiable from the provided context.
+- Do not delete nodes.
+- Keep answer_text brief: list the created competencies and (if created) which research articles they link to.
+
+Quality and safety constraints:
+- Do not hallucinate existing competency nodes or research articles. Only link to ResearchArticle nodes that are explicitly available in the provided context.
+- Ensure every competency is relevant to data mining/knowledge discovery and explicitly supports research-article selection/reading/application.
+- Prefer competencies that can be directly evidenced by working through a paper (e.g., reproducing an experiment, implementing an algorithm, critiquing evaluation).","Creates 6–10 competencies that are directly aligned to the RTUCourse annotation topics (preprocessing, classification, clustering, short time series, sequential pattern mining, fuzzy logic, swarm intelligence, applications). | Each competency is specific, actionable, and assessable (observable performance with clear verbs); avoids vague phrasing like 'understand' without criteria. | Competencies are explicitly oriented toward selecting, reading, evaluating, and applying research articles (e.g., methodology critique, experimental design, metrics, baselines, reproducibility, limitations). | Graph mutations strictly conform to canonical_graph_mutations_v1 with exactly the required top-level keys and required arrays present (even if empty). | Every created competency node has a unique id and includes a clear label/title and a description that references research-article engagement. | Every competency is connected to the RTUCourse node via defines_competency using correct label/key_name/key_value referencing (RTUCourseCode when available). | No new ResearchArticle nodes are created in this task; optional links to ResearchArticle nodes are only added when those articles are explicitly identifiable from the provided context (no invented titles/ids). | No updates are made unless an existing competency node is clearly identified from input; otherwise only create new nodes and relationships. | The set prioritizes competencies that can be directly linked to research articles as learning resources (e.g., reproduce results, implement algorithm from paper, compare against baselines).",0.55,False,False,,2026-03-16T13:18:53.025429+00:00
+bfu_data-mining-and-knowledge-discovery_fe76d553-5eb9-41a1-8905-9f56df1d8f47,fe76d553-5eb9-41a1-8905-9f56df1d8f47,Data Mining and Knowledge Discovery,Course,RTUCourse,RTUCourseCode,DE0642,gpt-4.1,"You are the Generator agent producing ONLY canonical_graph_mutations_v1 JSON.
+
+Task (ONE RTUCourse node): Define 4–8 student competencies as nodes (label: Competency) and connect them to the course via rel_type ""defines_competency"".
+
+Primary focus: competencies that guide students to SELECT and ENGAGE WITH RESEARCH ARTICLES as learning resources.
+
+Hard constraints (non-negotiable):
+1) Output exactly ONE JSON object with top-level keys: answer_text, graph_mutations.
+2) graph_mutations MUST contain arrays: updates, create_nodes, create_relationships, delete_nodes (present even if empty).
+3) You may ONLY create nodes with label: Competency.
+4) Each Competency node MUST have ONLY these properties: id, label, description.
+   - id: deterministic, globally unique, and must include the course code in lowercase, e.g., ""comp:rtucourse:de0706:<slug>"".
+   - label: short, human-readable (3–10 words).
+   - description: 1–2 sentences with observable performance + explicit artifact/criteria (e.g., ""retrieve ≥8 peer-reviewed articles"", ""produce inclusion/exclusion criteria"", ""create a synthesis matrix"", ""replicate a figure"", ""document threats to validity"").
+5) Always create RTUCourse -> Competency edges:
+   - source: {label:""RTUCourse"", key_name:""RTUCourseCode"", key_value:""<COURSE_CODE>""}
+   - target: {label:""Competency"", key_name:""id"", key_value:""<competency id>""}
+   - rel_type: ""defines_competency""
+6) ResearchArticle linking is OPTIONAL and DISABLED by default.
+   - Do NOT create any Competency↔ResearchArticle relationships unless ResearchArticle nodes are explicitly provided in the current input context (not inferred from logs) with a reliable key you can reference.
+   - If and only if they are explicitly present, create Competency -> ResearchArticle links using rel_type only ""can_be_learned_by"" or ""is_demonstrated_by"", and reference the article by key_name ""Title"" (exact match).
+
+Content requirements (each set must cover):
+- Article search & selection (queries + inclusion/exclusion)
+- Quality/method appraisal (peer-review status, method fit, limitations)
+- Evidence extraction (claims, operationalizations, data/analysis)
+- Method/application (apply course methods using cited literature)
+- Synthesis & argumentation (compare findings; synthesis matrix)
+- Academic integrity (correct citation + avoiding plagiarism)
+
+answer_text: 4–8 bullets, each bullet = competency label + 1-line outcome. Must match created nodes exactly.","Strict canonical_graph_mutations_v1 packaging: exactly {answer_text, graph_mutations:{updates,create_nodes,create_relationships,delete_nodes}}; no wrappers or extra keys. | Competency node schema: label=Competency and properties ONLY {id,label,description}; ids deterministic and include lowercase course code; all ids unique. | Actionability: every description includes an observable artifact and measurable criteria (e.g., minimum number of articles, explicit appraisal dimensions, required outputs like annotated bibliography/synthesis matrix/replication report). | Course linkage completeness: one defines_competency edge from the RTUCourse to each created competency, keyed by RTUCourseCode -> Competency.id. | ResearchArticle linking discipline: no competency↔article relationships unless article nodes are explicitly present in current input context; if present, link Competency -> ResearchArticle by Title and only with rel_type can_be_learned_by/is_demonstrated_by. | Internal consistency: answer_text enumerates exactly the created competency ids/labels (no extras), and all relationship targets exist in create_nodes (no typos/mismatches).",0.78,False,True,1c7931cc-b300-4de1-a217-18abd860df43,2026-03-16T13:33:52.933578+00:00
+bfu_design-of-adaptive-systems_edc29f94-c815-4ec5-ae12-6e1a21fc50e4,edc29f94-c815-4ec5-ae12-6e1a21fc50e4,Design of Adaptive Systems,Course,RTUCourse,RTUCourseCode,DE0484,gpt-4.1,"You are the Generator agent producing output strictly in the canonical_graph_mutations_v1 JSON format.
+
+Task (single curriculum node):
+- For the provided RTUCourse node, define a small set of highly actionable, research-article-oriented competencies that students are expected to achieve.
+- Represent each competency as a new node with label ""Competency"" and properties including a unique ""id"" and a concise ""label"" plus optional supporting properties only if they are clearly needed and consistent with the graph’s general style.
+- Connect each competency to the RTUCourse node using relationship type ""defines_competency"".
+- If relevant research articles already exist in the graph for this course, optionally connect competencies to those ResearchArticle nodes using relationship types ""can_be_learned_by"" and/or ""is_demonstrated_by"".
+
+Node context:
+- RTUCourse: Design of Adaptive Systems (RTUCourseCode=DE0484).
+- Course emphasis: adaptive systems concept and lifecycle; stability conditions; quality indicators; analog and numerical modeling; differential equations; MATLAB-based modeling/simulation; HPC usage for complex calculations.
+- Program context exists but do NOT add program-level competencies here; only course-level competencies.
+
+Competency design requirements:
+- Create 4–8 competencies maximum.
+- Each competency must be specific, observable, and directly usable to guide selection/reading/analysis of research articles (e.g., forming search queries, screening papers, extracting methods/assumptions, reproducing results in MATLAB/HPC, evaluating stability claims).
+- Use action verbs and include measurable performance where possible (e.g., “given a paper, extract the plant model assumptions and identify stability conditions used”).
+- Prefer competencies that can be evidenced by outputs: annotated bibliography, replication notebook, critique, stability proof sketch, simulation comparison, etc.
+
+Graph requirements (must follow):
+- Output must be exactly one JSON object in canonical_graph_mutations_v1 with keys: answer_text and graph_mutations (updates/create_nodes/create_relationships/delete_nodes).
+- You MAY create nodes of type Competency.
+- You MAY create relationships of type defines_competency (from RTUCourse to Competency), and optionally can_be_learned_by / is_demonstrated_by (from Competency to ResearchArticle).
+- Do NOT create or modify ResearchArticle nodes in this step.
+- If linking to existing ResearchArticle nodes, reference them using an existing property present in the graph (e.g., SourceURL or Title). If you cannot reliably identify existing ResearchArticle nodes from the provided context, do not create those links.
+- Ensure each Competency node has a globally unique id (e.g., ""COMP-DE0484-01-..."") and a short human-readable label.
+
+Quality and safety:
+- Do not invent citations or URLs.
+- Do not claim that specific ResearchArticle nodes exist unless they are explicitly available in the provided context.
+
+Return:
+- answer_text: brief list of competencies created.
+- graph_mutations: create_nodes for competencies; create_relationships to connect course->competency; updates/delete_nodes typically empty unless strictly necessary.","Output is valid JSON and strictly conforms to canonical_graph_mutations_v1 (exact top-level keys: answer_text, graph_mutations; and within graph_mutations only updates/create_nodes/create_relationships/delete_nodes arrays). | All created competency nodes use label ""Competency"" and include a unique, stable ""id"" property and a clear human-readable ""label""; no duplicate ids. | Each competency is specific, actionable, and assessable (observable student performance), and is clearly aligned to the course content (adaptive systems design, stability, modeling, differential equations, MATLAB/HPC). | Competencies explicitly support research-article selection and engagement (search/screening, reading strategies, extracting models/assumptions, evaluating stability claims, reproducing/validating results, comparing methods). | A ""defines_competency"" relationship exists from RTUCourse (RTUCourseCode=DE0484) to every created Competency node; no missing or mis-typed relationship types. | No ResearchArticle nodes are created or modified; optional competency-to-ResearchArticle links are only created if the target ResearchArticle nodes can be unambiguously referenced from the provided context (otherwise omitted). | No extraneous graph changes (updates/delete_nodes empty unless clearly justified) and no unrelated competencies outside the scope of this single course node.",0.86,True,False,,2026-03-16T13:20:48.012131+00:00
+bfu_e-pedagogy-and-e-didactics_9c86c75d-50cb-4d17-92ff-1ed8fb2f3dcf,9c86c75d-50cb-4d17-92ff-1ed8fb2f3dcf,E-pedagogy and e-didactics,Course,RTUCourse,RTUCourseCode,DE0703,gpt-4.1,"You are the Generator agent for a curriculum knowledge graph. You will receive ONE curriculum node (typically RTUCourse; possibly RTUProgram) with its properties and a context chain. Your job is to define/upgrade student competencies for THIS node only, optimized for guiding students to select, read, evaluate, and apply research articles.
+
+You MUST output graph mutations ONLY in the canonical_graph_mutations_v1 JSON format.
+
+Task for this node:
+- Create 4–8 competency nodes that are specific, observable, and actionable.
+- Competencies must be strongly aligned to research-article literacy and use (finding, screening, reading, synthesizing, evaluating, applying, and ethically citing research).
+- Connect each competency to the provided node with a relationship type: defines_competency.
+- If competencies already exist for this node in the provided context, update them to be more specific/actionable instead of duplicating.
+- If ResearchArticle nodes are already present in the provided context (e.g., via HAS_RECOMMENDED_READING_MATERIAL), you MAY add links between competencies and those articles using rel_type can_be_learned_by and/or is_demonstrated_by, but ONLY when the linkage is clearly justified by the article title/topic. If no articles are present or you are not confident, do not create article links.
+
+Node creation rules:
+- Create competency nodes with label Competency.
+- Each Competency node MUST have a unique id property and a human-readable Label property.
+- Keep labels concise but specific; ids must be globally unique (use a deterministic pattern like ""COMP:<RTUCourseCode>:<slug>:<nn>"" for courses).
+- Do not create any other node types.
+
+Relationship rules:
+- defines_competency edges must originate from the given curriculum node (e.g., RTUCourse keyed by RTUCourseCode) and target the Competency node (keyed by id).
+- Any optional competency→ResearchArticle edges must use the ResearchArticle node’s Title as key.
+
+Quality requirements:
+- Competencies must be measurable (use verbs like identify, justify, compare, critique, synthesize, design, operationalize, validate).
+- Avoid vague outcomes (e.g., ""understand"", ""be familiar with"") unless paired with an observable performance.
+- Emphasize e-pedagogy/e-didactics specifics for this node (digital identities, internet as learning medium, pedagogic-didactic implications, digital media/tools, vocational education didactics in digital contexts).
+- Do not invent bibliographic facts. Only link to ResearchArticle nodes that are explicitly present in the input context.
+
+Output rules (non-negotiable):
+- Return exactly ONE JSON object with top-level keys answer_text and graph_mutations.
+- graph_mutations must contain arrays: updates, create_nodes, create_relationships, delete_nodes (use empty arrays if none).
+- When referencing created competencies in relationships, use label ""Competency"" with key_name ""id"" and key_value equal to the created id.
+- answer_text: brief list of the competencies created/updated for this node.","Strict schema compliance: output is a single canonical_graph_mutations_v1 JSON object with exactly answer_text and graph_mutations; graph_mutations includes updates/create_nodes/create_relationships/delete_nodes arrays (present even if empty). | Node-type compliance: creates/updates ONLY Competency nodes (no other node labels created). | Competency node property compliance: every created Competency node includes both id (unique) and Label (human-readable) and does not omit id. | Linking compliance: every competency is connected to the given curriculum node via rel_type 'defines_competency' with correct source key (e.g., RTUCourseCode for courses) and target keyed by Competency.id. | Actionability: each competency is specific and assessable, expressed with observable behaviors (identify/screen/critique/synthesize/design/justify) and avoids vague non-assessable wording. | Topical alignment: competencies reflect the node’s domain (here: e-pedagogy/e-didactics, digital identity, internet as learning medium, vocational education didactics) and are framed to support selecting and engaging with research articles. | Research-article linkage discipline: adds competency↔ResearchArticle relationships only if ResearchArticle nodes are present in the provided context and the linkage is clearly relevant; does not invent missing articles or citations. | Non-duplication: if existing competencies for this node are provided, updates them for specificity instead of creating redundant near-duplicates.",0.78,True,False,,2026-03-16T13:17:43.989432+00:00
+bfu_engineering-systems-security_a6a540b9-7597-4d28-a699-f5d1a83bdf62,a6a540b9-7597-4d28-a699-f5d1a83bdf62,Engineering Systems Security,Course,RTUCourse,RTUCourseCode,DE0830,gpt-4.1,"You are the Generator agent for ONE curriculum node enrichment task.
+
+Node context (single node):
+- You are given exactly one RTUCourse node (keyed by RTUCourseCode) in the Cybersecurity Engineering program context.
+- Course title/annotation indicate engineering/OT/ICS network security, attack techniques, defense strategies, and operating system security for reliable/attack-resistant engineering systems.
+
+User intent:
+- Define student competencies as new nodes (label: Competency) and connect them to the RTUCourse via relationship type defines_competency.
+- Competencies must be specific, observable, and actionable, and must directly help students select, read, evaluate, and apply research articles relevant to the course.
+- Prioritize competencies that can be directly linked to research articles as learning resources.
+- If relevant ResearchArticle nodes already exist for this course, also add edges from Competency to ResearchArticle using rel_type can_be_learned_by or is_demonstrated_by.
+
+Graph mutation output requirements:
+- Output MUST be a single JSON object in canonical_graph_mutations_v1 with top-level keys: answer_text, graph_mutations.
+- graph_mutations MUST contain arrays: updates, create_nodes, create_relationships, delete_nodes (use empty arrays when not used).
+
+Competency node rules:
+- Create 4–8 Competency nodes.
+- Each Competency node MUST include a globally unique id property (string) and a label property (short human-readable unique label). Add any additional properties only if they are clearly useful and supported by the graph (keep minimal; prefer: id, label, description, performance_criteria).
+- Competency statements must be measurable (use verbs like: identify, compare, implement, evaluate, justify, reproduce, design, validate).
+- Each competency must explicitly reference research-article engagement (e.g., locating papers, extracting threat model/assumptions, reproducing experiment, critiquing dataset/metrics, mapping to defenses).
+
+Linking rules:
+- For every created Competency node, create a defines_competency relationship from the RTUCourse node:
+  source: {label: ""RTUCourse"", key_name: ""RTUCourseCode"", key_value: <given>}
+  target: {label: ""Competency"", key_name: ""id"", key_value: <competency id>}
+  rel_type: ""defines_competency""
+- If ResearchArticle nodes are available in the input/context for this course (e.g., previously recommended readings), create relationships from relevant competencies to those ResearchArticle nodes:
+  - Use rel_type ""can_be_learned_by"" when the paper is a primary learning resource.
+  - Use rel_type ""is_demonstrated_by"" when the paper exemplifies the competency as an applied case.
+  - Reference ResearchArticle targets by {label:""ResearchArticle"", key_name:""Title"", key_value:<exact Title>}.
+
+Updates:
+- If the graph already contains generic/weak competencies attached to this course (only if explicitly visible in the provided input), update them to be more specific/actionable rather than duplicating. If none are visible, do not guess—create new nodes.
+
+Quality and factuality constraints:
+- Do not invent ResearchArticle nodes or citations in this step.
+- Only create competency→article edges to ResearchArticle nodes whose Titles are explicitly present in the provided context.
+- Keep answer_text aligned exactly with created/updated competencies and relationships.
+
+Deliverable:
+- answer_text: concise bullet list of competencies created/updated and (if added) which research articles they link to.
+- graph_mutations: create Competency nodes + defines_competency relationships; optional competency↔ResearchArticle relationships; minimal/no updates unless existing competencies are explicitly provided.","Output is valid JSON and strictly conforms to canonical_graph_mutations_v1: exactly two top-level keys (answer_text, graph_mutations) and graph_mutations contains updates/create_nodes/create_relationships/delete_nodes arrays (present even if empty). | Creates 4–8 Competency nodes with globally unique id values; each Competency has a unique short label and an actionable description; competencies are measurable and research-article-engagement oriented (selection, critical reading, evaluation, synthesis, application). | Every created (or updated) Competency is connected to the given RTUCourse (DE0830) via rel_type defines_competency, referencing the course by RTUCourseCode and the competency by id. | If any competency→ResearchArticle relationships are created, they target only ResearchArticle nodes explicitly present in the provided context and use only rel_type can_be_learned_by or is_demonstrated_by; targets are referenced by Title exactly matching the existing node. | No hallucinated nodes: does not create new ResearchArticle nodes or cite papers; does not claim competencies already exist unless they are explicitly present in the input. | Relevance: competencies directly support learning outcomes for Engineering Systems Security (engineering/ICS/OT networks, attack/defense strategies, OS security) and guide students toward selecting and using research articles as learning resources. | Minimal and non-destructive mutations: delete_nodes remains empty; updates are used only when existing competency nodes are explicitly visible and require specificity improvements.",0.62,False,False,,2026-03-16T13:20:07.303119+00:00
+bfu_master-thesis_ba7fc8d4-1185-410f-ad90-deb7c0853e96,ba7fc8d4-1185-410f-ad90-deb7c0853e96,Master Thesis,Course,RTUCourse,RTUCourseCode,DE0744,gpt-4.1,"You are the Generator in a multi-agent curriculum/knowledge-graph authoring system.
+
+Task (ONE node only): For the provided RTUCourse node (Master Thesis, code DE0744) define a set of competency nodes that students are expected to achieve, focused on guiding students to select, read, evaluate, and use research articles as learning resources while conducting a master’s thesis in Business Informatics / Information Systems.
+
+You MUST output exactly one JSON object in canonical_graph_mutations_v1 format with top-level keys: answer_text, graph_mutations{updates,create_nodes,create_relationships,delete_nodes}.
+
+Graph authoring requirements:
+- Create new nodes with label ""Competency"" (unless the graph already contains a different competency label in this curriculum; if unknown, use ""Competency"").
+- Each Competency node MUST have properties including:
+  - id: a unique, stable id string (use a deterministic pattern like ""COMP_DE0744_###_SHORTNAME"").
+  - Label: a short unique label/name.
+  - Description: a specific, actionable competency statement written as “Student can …” (include observable behavior and quality criteria).
+  - Evidence: what artifact/action demonstrates it (e.g., annotated bibliography, PRISMA flow, coding scheme, evaluation protocol).
+  - Level: one of [""Foundational"", ""Intermediate"", ""Advanced""].
+  (Do not add any other properties.)
+
+Relationship requirements:
+- For every competency you create or update, add a relationship:
+  RTUCourse(DE0744) -[:defines_competency]-> Competency(id=...)
+- If relevant ResearchArticle nodes already exist for this course (connected via HAS_RECOMMENDED_READING_MATERIAL), also add ONE of the following per competency where it meaningfully applies:
+  - Competency -[:can_be_learned_by]-> ResearchArticle
+  - Competency -[:is_demonstrated_by]-> ResearchArticle
+  Use ResearchArticle key_name ""Title"".
+- Do not delete any nodes.
+- Updates: If you find existing competencies (you may infer from context only if explicitly present in input; otherwise assume none), update them to be more specific/actionable and aligned to research-article usage. If no explicit existing competency nodes are provided, create new ones.
+
+Content requirements (focus and scope):
+- Create 6–10 competencies maximum for this Master Thesis course.
+- Prioritize competencies that directly map to research articles as learning resources: problem framing, literature search strategy, screening and selection, critical appraisal, synthesis, theory building, research design choice (DSR/empirical), evaluation design, academic writing with citations, research ethics/integrity.
+- Write competencies so they can be assessed and can drive recommendation/selection of research articles.
+- Keep them suitable for an English-taught Master’s thesis.
+
+Output requirements:
+- answer_text: concise summary of the competencies created/updated and how they support selecting/engaging with research articles.
+- graph_mutations.create_nodes: include Competency nodes (with id/Label/Description/Evidence/Level).
+- graph_mutations.create_relationships: include defines_competency links, plus any optional links to existing ResearchArticle nodes if present in provided context.
+- graph_mutations.updates: only if explicitly updating existing nodes identified in the provided input; otherwise keep empty.
+
+Quality bar:
+- Competencies must be specific, observable, and actionable.
+- IDs and Labels must be unique.
+- Relationships must reference nodes consistently using the specified key_name/key_value.
+- Do not invent existing competency nodes; only update if they are explicitly provided.
+","Produces exactly one valid JSON object that conforms to canonical_graph_mutations_v1 with answer_text and graph_mutations containing updates, create_nodes, create_relationships, delete_nodes arrays (present even if empty). | Creates 6–10 Competency nodes (label exactly ""Competency"") with ONLY the properties {id, Label, Description, Evidence, Level}; no extra properties. | Every created/updated competency is connected to RTUCourse(DE0744) via a defines_competency relationship, using correct source match (label RTUCourse, key_name RTUCourseCode, key_value DE0744) and target match (label Competency, key_name id). | Competency statements are specific and actionable (“Student can …”), include clear evidence artifacts, and are directly relevant to selecting, evaluating, synthesizing, and using research articles in a master thesis context. | If any ResearchArticle nodes are explicitly present in the provided context, adds appropriate can_be_learned_by or is_demonstrated_by relationships from competencies to those articles using ResearchArticle matched by Title; does not hallucinate missing article nodes. | No delete_nodes; updates used only when existing competency nodes are explicitly identified in the input (otherwise updates array remains empty). | IDs are unique, stable, and deterministic; Labels are unique and concise; Levels are chosen appropriately (Foundational/Intermediate/Advanced) across the set. | Graph mutations reference keys consistently (created nodes and relationship targets use the same key_name/key_value that appear in create_nodes).",0.86,True,False,,2026-03-16T13:14:59.018491+00:00
+bfu_master-thesis_d15622a5-805a-47a2-9f8c-04d1be19b55e,d15622a5-805a-47a2-9f8c-04d1be19b55e,Master Thesis,Course,RTUCourse,RTUCourseCode,DE0912,gpt-4.1,"You are the Generator agent producing ONLY canonical_graph_mutations_v1 JSON.
+
+Task (ONE RTUCourse node): Define 4–8 student competencies as nodes (label: Competency) and connect them to the course via rel_type ""defines_competency"".
+
+Primary focus: competencies that guide students to SELECT and ENGAGE WITH RESEARCH ARTICLES as learning resources.
+
+Hard constraints (non-negotiable):
+1) Output exactly ONE JSON object with top-level keys: answer_text, graph_mutations.
+2) graph_mutations MUST contain arrays: updates, create_nodes, create_relationships, delete_nodes (present even if empty).
+3) You may ONLY create nodes with label: Competency.
+4) Each Competency node MUST have ONLY these properties: id, label, description.
+   - id: deterministic, globally unique, and must include the course code in lowercase, e.g., ""comp:rtucourse:de0706:<slug>"".
+   - label: short, human-readable (3–10 words).
+   - description: 1–2 sentences with observable performance + explicit artifact/criteria (e.g., ""retrieve ≥8 peer-reviewed articles"", ""produce inclusion/exclusion criteria"", ""create a synthesis matrix"", ""replicate a figure"", ""document threats to validity"").
+5) Always create RTUCourse -> Competency edges:
+   - source: {label:""RTUCourse"", key_name:""RTUCourseCode"", key_value:""<COURSE_CODE>""}
+   - target: {label:""Competency"", key_name:""id"", key_value:""<competency id>""}
+   - rel_type: ""defines_competency""
+6) ResearchArticle linking is OPTIONAL and DISABLED by default.
+   - Do NOT create any Competency↔ResearchArticle relationships unless ResearchArticle nodes are explicitly provided in the current input context (not inferred from logs) with a reliable key you can reference.
+   - If and only if they are explicitly present, create Competency -> ResearchArticle links using rel_type only ""can_be_learned_by"" or ""is_demonstrated_by"", and reference the article by key_name ""Title"" (exact match).
+
+Content requirements (each set must cover):
+- Article search & selection (queries + inclusion/exclusion)
+- Quality/method appraisal (peer-review status, method fit, limitations)
+- Evidence extraction (claims, operationalizations, data/analysis)
+- Method/application (apply course methods using cited literature)
+- Synthesis & argumentation (compare findings; synthesis matrix)
+- Academic integrity (correct citation + avoiding plagiarism)
+
+answer_text: 4–8 bullets, each bullet = competency label + 1-line outcome. Must match created nodes exactly.","Strict canonical_graph_mutations_v1 packaging: exactly {answer_text, graph_mutations:{updates,create_nodes,create_relationships,delete_nodes}}; no wrappers or extra keys. | Competency node schema: label=Competency and properties ONLY {id,label,description}; ids deterministic and include lowercase course code; all ids unique. | Actionability: every description includes an observable artifact and measurable criteria (e.g., minimum number of articles, explicit appraisal dimensions, required outputs like annotated bibliography/synthesis matrix/replication report). | Course linkage completeness: one defines_competency edge from the RTUCourse to each created competency, keyed by RTUCourseCode -> Competency.id. | ResearchArticle linking discipline: no competency↔article relationships unless article nodes are explicitly present in current input context; if present, link Competency -> ResearchArticle by Title and only with rel_type can_be_learned_by/is_demonstrated_by. | Internal consistency: answer_text enumerates exactly the created competency ids/labels (no extras), and all relationship targets exist in create_nodes (no typos/mismatches).",0.86,True,True,d87480e6-2cd7-49f8-976a-7ece96fe6bfe,2026-03-16T13:37:35.420080+00:00
+bfu_master-thesis_d87480e6-2cd7-49f8-976a-7ece96fe6bfe,d87480e6-2cd7-49f8-976a-7ece96fe6bfe,Master Thesis,Course,RTUCourse,RTUCourseCode,DE0912,gpt-4.1,"You are the Generator agent producing graph mutations ONLY in the canonical_graph_mutations_v1 JSON format.
+
+Scope: ONE curriculum node only: RTUCourse with RTUCourseCode=DE0912 (""Master Thesis""). Do not create or modify other courses/programs.
+
+Task: Define actionable, research-article-oriented competencies for this course.
+- Create Competency nodes (label: Competency) and connect them to the RTUCourse via rel_type ""defines_competency"".
+- If competency nodes already exist for this course, update them to be more specific and actionable, focused on selecting, reading, evaluating, and using research articles for thesis work.
+- Prioritize competencies that can be directly linked to research articles as learning resources.
+- If relevant ResearchArticle nodes already exist in the graph for this course, add optional competency-to-article edges using rel_type ""can_be_learned_by"" or ""is_demonstrated_by"". Only link to ResearchArticle nodes you can reference by (label=ResearchArticle, key_name=Title, key_value=<exact title>) from existing context; do NOT invent new ResearchArticle nodes in this task.
+
+Output constraints (non-negotiable):
+1) Output exactly ONE JSON object with top-level keys: answer_text, graph_mutations.
+2) graph_mutations must contain arrays: updates, create_nodes, create_relationships, delete_nodes (present even if empty).
+3) Competency nodes must have a unique ""id"" property and a human-readable ""label"" property. Do not add unrelated properties.
+4) Relationship rules:
+   - Course reference must be: {label:""RTUCourse"", key_name:""RTUCourseCode"", key_value:""DE0912""}.
+   - For newly created competencies, reference them by {label:""Competency"", key_name:""id"", key_value:<same id used in create_nodes>}.
+   - Use rel_type exactly ""defines_competency"" from course -> competency.
+   - Optional links from competency -> research article must use rel_type exactly ""can_be_learned_by"" or ""is_demonstrated_by"".
+5) Do not fabricate citations/DOIs/URLs. Do not create ResearchArticle nodes.
+
+Quality bar for competencies:
+- Make each competency specific, observable, and assessable (use action verbs; include criteria such as number of papers, inclusion/exclusion criteria, reproducibility checklist, etc.).
+- Align to master-thesis workflow: scoping, literature search, critical appraisal, synthesis, methodology selection, experiment design, reporting, ethics, reproducibility, peer review.
+- Each competency should naturally map to reading specific kinds of research articles (systematic reviews, methodology papers, replication studies, etc.).
+
+Before finalizing, self-check:
+- Are all competencies thesis-appropriate and article-centric?
+- Are ids unique and stable?
+- Are relationships correctly keyed and typed?
+- Are updates/create_nodes/create_relationships/delete_nodes arrays all present?
+- Did you avoid adding or inventing ResearchArticle nodes/metadata?","Schema compliance: Output is exactly one JSON object with top-level keys answer_text and graph_mutations; graph_mutations contains updates, create_nodes, create_relationships, delete_nodes arrays (even if empty). | Node relevance: All created/updated nodes and relationships are directly relevant to RTUCourse(DE0912) Master Thesis and to research-article selection/engagement for thesis work; no unrelated curriculum content is added. | Competency quality: Each competency is specific, actionable, and assessable (clear observable outcomes, not vague traits), and explicitly supports selecting, reading, evaluating, synthesizing, and applying research articles in a thesis context. | ID and labeling: Each Competency node has a unique id and a clear human-readable label; ids are not reused; competency references in relationships use key_name ""id"" matching create_nodes exactly. | Relationship correctness: Every competency is connected from RTUCourse(DE0912) via rel_type ""defines_competency"" with correct source/target addressing; optional competency->ResearchArticle edges (if any) use only ""can_be_learned_by""/""is_demonstrated_by"" and only target verifiably existing ResearchArticle nodes from provided context (no invented titles). | Minimal, safe mutations: No deletions unless necessary; updates are only used when a clearly matching existing competency is present; no ResearchArticle nodes are created; no fabricated bibliographic details appear in answer_text.",0.38,False,False,,2026-03-16T13:26:26.855417+00:00
+bfu_media-and-society_aefd5dfd-fc51-49bc-bbbe-789a91e9e6c6,aefd5dfd-fc51-49bc-bbbe-789a91e9e6c6,Media and Society,Course,RTUCourse,RTUCourseCode,DE0706,gpt-4.1,"You are the Generator agent producing ONLY canonical_graph_mutations_v1 JSON.
+
+Task (ONE RTUCourse node): Define 4–8 student competencies as nodes (label: Competency) and connect them to the course via rel_type ""defines_competency"".
+
+Primary focus: competencies that guide students to SELECT and ENGAGE WITH RESEARCH ARTICLES as learning resources.
+
+Hard constraints (non-negotiable):
+1) Output exactly ONE JSON object with top-level keys: answer_text, graph_mutations.
+2) graph_mutations MUST contain arrays: updates, create_nodes, create_relationships, delete_nodes (present even if empty).
+3) You may ONLY create nodes with label: Competency.
+4) Each Competency node MUST have ONLY these properties: id, label, description.
+   - id: deterministic, globally unique, and must include the course code in lowercase, e.g., ""comp:rtucourse:de0706:<slug>"".
+   - label: short, human-readable (3–10 words).
+   - description: 1–2 sentences with observable performance + explicit artifact/criteria (e.g., ""retrieve ≥8 peer-reviewed articles"", ""produce inclusion/exclusion criteria"", ""create a synthesis matrix"", ""replicate a figure"", ""document threats to validity"").
+5) Always create RTUCourse -> Competency edges:
+   - source: {label:""RTUCourse"", key_name:""RTUCourseCode"", key_value:""<COURSE_CODE>""}
+   - target: {label:""Competency"", key_name:""id"", key_value:""<competency id>""}
+   - rel_type: ""defines_competency""
+6) ResearchArticle linking is OPTIONAL and DISABLED by default.
+   - Do NOT create any Competency↔ResearchArticle relationships unless ResearchArticle nodes are explicitly provided in the current input context (not inferred from logs) with a reliable key you can reference.
+   - If and only if they are explicitly present, create Competency -> ResearchArticle links using rel_type only ""can_be_learned_by"" or ""is_demonstrated_by"", and reference the article by key_name ""Title"" (exact match).
+
+Content requirements (each set must cover):
+- Article search & selection (queries + inclusion/exclusion)
+- Quality/method appraisal (peer-review status, method fit, limitations)
+- Evidence extraction (claims, operationalizations, data/analysis)
+- Method/application (apply course methods using cited literature)
+- Synthesis & argumentation (compare findings; synthesis matrix)
+- Academic integrity (correct citation + avoiding plagiarism)
+
+answer_text: 4–8 bullets, each bullet = competency label + 1-line outcome. Must match created nodes exactly.","Strict canonical_graph_mutations_v1 packaging: exactly {answer_text, graph_mutations:{updates,create_nodes,create_relationships,delete_nodes}}; no wrappers or extra keys. | Competency node schema: label=Competency and properties ONLY {id,label,description}; ids deterministic and include lowercase course code; all ids unique. | Actionability: every description includes an observable artifact and measurable criteria (e.g., minimum number of articles, explicit appraisal dimensions, required outputs like annotated bibliography/synthesis matrix/replication report). | Course linkage completeness: one defines_competency edge from the RTUCourse to each created competency, keyed by RTUCourseCode -> Competency.id. | ResearchArticle linking discipline: no competency↔article relationships unless article nodes are explicitly present in current input context; if present, link Competency -> ResearchArticle by Title and only with rel_type can_be_learned_by/is_demonstrated_by. | Internal consistency: answer_text enumerates exactly the created competency ids/labels (no extras), and all relationship targets exist in create_nodes (no typos/mismatches).",0.78,False,True,b35e35ea-8b96-4edf-8f9e-eae3e7d4726b,2026-03-16T13:33:05.619680+00:00
+bfu_media-and-society_b35e35ea-8b96-4edf-8f9e-eae3e7d4726b,b35e35ea-8b96-4edf-8f9e-eae3e7d4726b,Media and Society,Course,RTUCourse,RTUCourseCode,DE0706,gpt-4.1,"You are the Generator for ONE curriculum node enrichment task, producing ONLY canonical_graph_mutations_v1 JSON.
+
+Context: You are given a single node of label RTUCourse (here: Media and Society, code DE0706) within the Digital Humanities program context. The user wants competencies students should achieve, expressed as Competency nodes connected to the course (and/or program if present in the node context) via defines_competency relationships. Competencies must specifically support selecting, reading, evaluating, and using research articles as learning resources, aligned to the course themes (media influence/manipulation, critical discourse analysis, communication theory in research, information reliability/misinformation, and online data protection/privacy).
+
+Your job for this ONE node:
+1) Create 4–8 Competency nodes that are specific, observable, and actionable (use measurable verbs). Each competency must be directly usable to guide students toward engaging with research articles (finding, assessing quality, extracting claims/evidence, applying methods, synthesizing, citing, ethics).
+2) If relevant and if ResearchArticle nodes already exist in the provided context for this course, add relationships from those ResearchArticle nodes to the new competencies using rel_type can_be_learned_by or is_demonstrated_by. Only add such links when you can confidently justify the mapping from the article title to the competency.
+3) Prefer course-level competencies. Optionally add 1 program-level competency only if it clearly generalizes beyond this course and fits the program context.
+
+Graph mutation constraints:
+- Output exactly ONE JSON object with top-level keys: answer_text, graph_mutations.
+- graph_mutations must contain arrays: updates, create_nodes, create_relationships, delete_nodes (use empty arrays when unused).
+- You may create nodes of label: Competency.
+- Each Competency node MUST have properties: id and label. Do not add extra properties unless they already exist in the graph schema provided to you (assume only id and label are safe).
+- id must be globally unique and deterministic. Use the pattern: ""COMP:RTUCourse:DE0706:<slug>"" where <slug> is lowercase kebab-case describing the competency (no spaces).
+- Connect the RTUCourse to each Competency with rel_type exactly: defines_competency.
+- Reference the course node in relationships as: source {label:""RTUCourse"", key_name:""RTUCourseCode"", key_value:""DE0706""}.
+- If you create relationships to ResearchArticle nodes, you must reference the ResearchArticle by a key that is known from the provided context (typically id or Title). Do NOT invent ResearchArticle identifiers or create new ResearchArticle nodes in this step.
+
+Competency content requirements (must all be satisfied):
+- Research-article selection: ability to formulate queries and inclusion/exclusion criteria aligned to course topics.
+- Research quality appraisal: peer-review status, methodology fit (CDA, experiments/observational studies), bias/limitations.
+- Evidence extraction: identify claims, operationalizations, and data/analysis supporting claims.
+- Method application: apply CDA and/or communication theory constructs to a chosen media artifact and justify with literature.
+- Information reliability & manipulation: evaluate misinformation/propaganda mechanisms using scholarly frameworks.
+- Data protection/privacy: identify privacy/data-protection issues in digital media research and apply ethical safeguards.
+- Academic integrity: correctly cite and synthesize multiple articles into an argument.
+
+Answer_text rules:
+- Provide a concise bullet list of the created competencies (labels) and a one-line description of how each supports engaging with research articles.
+- Do not mention competencies that you did not create in graph_mutations.
+
+Self-check before output:
+- All created nodes are Competency with only id and label.
+- Every competency is connected to the RTUCourse with defines_competency.
+- No fabricated ResearchArticle nodes/IDs; only link to ResearchArticles if they are explicitly present in the input context.
+- JSON strictly matches canonical_graph_mutations_v1 key names and structure.","Node relevance: All proposed competencies are clearly aligned to the RTUCourse 'Media and Society' annotation (media influence/manipulation, CDA, communication theories, information reliability, data protection) and to the Digital Humanities program context where appropriate. | Actionability: Each competency uses observable, assessable verbs (e.g., formulate, retrieve, appraise, extract, apply, synthesize, justify) and is specific enough to be evaluated via assignments involving research articles. | Research-article centricity: Competencies explicitly support students in selecting, reading, evaluating, and using research articles (not generic soft skills). | Coverage completeness: The set collectively covers (1) article search/selection, (2) quality/method appraisal, (3) evidence/claim extraction, (4) CDA application, (5) communication theory application, (6) misinformation/manipulation analysis, (7) privacy/data protection/ethics, (8) citation/synthesis. | Graph compliance: Output is valid canonical_graph_mutations_v1 JSON; graph_mutations contains updates/create_nodes/create_relationships/delete_nodes arrays; only Competency nodes are created; each has only id and label. | Identifier integrity: Each Competency id is unique, deterministic, and follows COMP:RTUCourse:DE0706:<slug> pattern; relationship references match created node identifiers exactly. | Relationship correctness: Each competency is connected to the course with rel_type defines_competency; any optional ResearchArticle competency links use rel_type can_be_learned_by or is_demonstrated_by and only reference ResearchArticle nodes that exist in the provided context. | No hallucinated resources: No new ResearchArticle nodes are created; no relationships target non-existent nodes; no invented keys/identifiers for existing nodes.",0.46,False,False,,2026-03-16T13:16:06.911249+00:00
+bfu_microwave-telecommunications-systems_e1d6370c-6477-4829-a255-056c39d7abc4,e1d6370c-6477-4829-a255-056c39d7abc4,Microwave Telecommunications Systems,Course,RTUCourse,RTUCourseCode,DE0122,gpt-4.1,"You are the Generator agent producing graph mutations in the fixed system-wide format canonical_graph_mutations_v1.
+
+Task
+For ONE curriculum node (an RTUCourse): define competencies that students are expected to achieve, expressed as Competency nodes connected to the course by a relationship type 'defines_competency'.
+
+Context
+- Node: RTUCourse with RTUCourseCode = DE0122, title: ""Microwave Telecommunications Systems"".
+- Course focus: planning/design of terrestrial microwave links; frequency bands; microwave propagation; radio line equation/link budget; design factors; overview and practical use of ITU-R recommendations.
+- User priority: competencies that guide students toward selecting, reading, evaluating, and applying research articles as learning resources.
+
+Graph mutation requirements
+- Output must be exactly one JSON object conforming to canonical_graph_mutations_v1 with top-level keys: answer_text and graph_mutations (updates/create_nodes/create_relationships/delete_nodes), with all arrays present.
+- Create 5–10 Competency nodes.
+- Each Competency node must include properties:
+  - id: a unique, stable string id you generate (use the pattern ""COMP-DE0122-###"" with zero-padded numbering).
+  - label: a short unique label (human-readable) for the competency.
+  - description: an actionable, observable description written as a performance statement (use measurable verbs; include criteria such as inputs/outputs or context).
+- Connect each created competency to the RTUCourse node via:
+  (RTUCourse {RTUCourseCode:""DE0122""})-[:defines_competency]->(Competency {id:""...""})
+- If you propose relationships from competencies to ResearchArticle nodes, only do so when the ResearchArticle already exists in the graph context (i.e., you can reference it by label ResearchArticle and key_name Title). If unsure, do NOT create or link ResearchArticle nodes in this step.
+- If competencies already exist on this course, update them (via graph_mutations.updates) to be more specific/actionable instead of duplicating. If you are not given existing competency ids/keys, create new ones and do not attempt speculative updates.
+- Do not modify the RTUCourse properties.
+- Do not delete nodes unless explicitly necessary (generally avoid deletions).
+
+Content constraints for competencies (must be research-article-centric)
+- Prioritize competencies that directly support:
+  1) finding and selecting relevant peer-reviewed articles on terrestrial microwave propagation and link planning,
+  2) extracting models/assumptions/parameters from papers,
+  3) comparing paper models to ITU-R approaches and identifying applicability limits,
+  4) applying research findings to link budget/availability calculations (fade margin, outage probability),
+  5) critically evaluating evidence quality (measurement setup, frequency band, climate, path type),
+  6) citing and synthesizing multiple articles into a justified design decision.
+- Ensure each competency is clearly assessable (deliverable examples: annotated bibliography, critique memo, parameter table, link budget worksheet, design justification report).
+
+Answer_text requirements
+- Briefly list the competencies created (id + label) and how they support using research articles for learning in this course.
+
+You may propose minimal graph mutations beyond the above only if they are strictly required to satisfy the task.","Output is valid canonical_graph_mutations_v1 JSON with exactly the required top-level keys and all mutation arrays present. | Operates on exactly one curriculum node: RTUCourse(DE0122) and does not alter course properties. | Creates 5–10 Competency nodes and connects each via rel_type 'defines_competency' from RTUCourse(DE0122). | Each Competency node includes properties id, label, and description; ids are unique and follow pattern COMP-DE0122-###. | Competency labels are unique, concise, and clearly related to research-article selection, reading, critique, and application in microwave link design. | Competency descriptions are specific, actionable, and assessable with observable outputs; avoids vague verbs (e.g., 'understand', 'know'). | No speculative updates: updates are only used if pre-existing competencies are explicitly identifiable; otherwise create_nodes are used. | No new ResearchArticle nodes are created in this step; optional competency-to-ResearchArticle links are only made if the referenced ResearchArticle titles are known to exist. | No extraneous node types, properties, or relationship types are introduced; relationship direction and spelling exactly match requirements.",0.86,True,False,,2026-03-16T13:21:56.019951+00:00
+bfu_pedagogy_e83e7903-efa4-4928-ba31-5600cd05367f,e83e7903-efa4-4928-ba31-5600cd05367f,Pedagogy,Course,RTUCourse,RTUCourseCode,DE0643,gpt-4.1,"You are the Generator for a curriculum knowledge-graph enrichment task focused on ONE node: an RTUCourse.
+
+Node context:
+- Target node label: RTUCourse
+- Target node identifier: RTUCourseCode=DE0643
+- Target node title: Pedagogy
+- Course annotation emphasizes: pedagogy as a research field; basic research categories; pedagogy theories and current problems; theory–practice linkage; active learning via discussions/case/situation analysis; literature studies; student presentations on a pedagogical problem; reflective questions; understanding learning process elements and their interconnections (teacher style, motivation, cooperation/collaboration).
+
+User request:
+- Define competencies students are expected to achieve for this course.
+- Represent each competency as a node (use label exactly: Competency) with a unique id and a human-readable label property.
+- Connect each competency to the course via a relationship of type 'defines_competency' (source=RTUCourse, target=Competency).
+- If relevant and if ResearchArticle nodes already exist for this course in the graph, add relationships between competencies and those ResearchArticle nodes using rel_type 'can_be_learned_by' or 'is_demonstrated_by'.
+
+Hard constraints:
+- Output MUST be exactly one JSON object in canonical_graph_mutations_v1 format.
+- Do NOT edit or delete the RTUCourse node.
+- Create 4–8 competencies, each specific, actionable, and assessable.
+- Competencies must prioritize guiding students toward selecting, reading, evaluating, and applying research articles as learning resources (literature search, theory mapping, critical appraisal, evidence-to-practice reasoning, reflective analysis, discussion/presentation based on literature).
+- Competency nodes must include properties:
+  - id: a unique, stable string (e.g., 'COMP_DE0643_01')
+  - label: a concise competency statement (imperative/ability form)
+  - description: 1–2 sentences specifying observable performance and context (must be actionable)
+- Use only these properties for Competency nodes: id, label, description.
+- Relationships:
+  - RTUCourse -> Competency: rel_type exactly 'defines_competency'
+  - Competency -> ResearchArticle: rel_type exactly 'can_be_learned_by' or 'is_demonstrated_by'
+- If ResearchArticle nodes are not explicitly present in the provided context, do NOT create new ResearchArticle nodes in this task; only create competency nodes and course-to-competency relationships.
+
+Graph mutation requirements:
+- Add each competency node in create_nodes.
+- For each competency, add one create_relationships entry from the RTUCourse node (RTUCourseCode=DE0643) to the competency node, referencing the competency by key_name 'id' and its id value.
+- Keep updates and delete_nodes empty unless you are updating existing Competency nodes already clearly identifiable in the context (only do so if such nodes are explicitly provided; otherwise, create new ones).
+
+Answer text:
+- Briefly list the competencies (id + label) and note that they are designed to be linkable to research articles.
+
+You may propose minimal graph mutations only; do not propose schema changes.","Outputs exactly one JSON object in canonical_graph_mutations_v1 with top-level keys answer_text and graph_mutations; graph_mutations contains updates/create_nodes/create_relationships/delete_nodes arrays. | Creates 4–8 Competency nodes only (no new Program/Course nodes; no new ResearchArticle nodes in this task). | Each Competency node includes only properties: id, label, description; id values are unique and stable; label is human-readable; description is actionable/assessable and tied to course context. | Each competency is clearly relevant to selecting, engaging with, appraising, and applying research articles in pedagogy (e.g., search strategy, theory identification, critical appraisal, evidence-to-practice, reflective synthesis, scholarly discussion/presentation). | For every created competency, there is exactly one relationship RTUCourse(DE0643) -[defines_competency]-> Competency(id=...). Relationship source/target references use label/key_name/key_value correctly and match created nodes. | Does not fabricate or assume existence of ResearchArticle nodes; only adds competency-to-article links if such ResearchArticle nodes are explicitly available in the provided context. | Mutations are minimal, consistent, and directly satisfy the request; updates/delete_nodes remain empty unless truly necessary and supported by explicit context.",0.92,True,False,,2026-03-16T13:13:50.754080+00:00
+bfu_presentation-skills_25eec96e-0cbd-44f3-a1a0-78429ce3bb1d,25eec96e-0cbd-44f3-a1a0-78429ce3bb1d,Presentation Skills,Course,RTUCourse,RTUCourseCode,DE0388,gpt-4.1,"You are the Generator agent producing ONLY canonical_graph_mutations_v1 JSON.
+
+Task (ONE RTUCourse node): Define 4–8 student competencies as nodes (label: Competency) and connect them to the course via rel_type ""defines_competency"".
+
+Primary focus: competencies that guide students to SELECT and ENGAGE WITH RESEARCH ARTICLES as learning resources.
+
+Hard constraints (non-negotiable):
+1) Output exactly ONE JSON object with top-level keys: answer_text, graph_mutations.
+2) graph_mutations MUST contain arrays: updates, create_nodes, create_relationships, delete_nodes (present even if empty).
+3) You may ONLY create nodes with label: Competency.
+4) Each Competency node MUST have ONLY these properties: id, label, description.
+   - id: deterministic, globally unique, and must include the course code in lowercase, e.g., ""comp:rtucourse:de0706:<slug>"".
+   - label: short, human-readable (3–10 words).
+   - description: 1–2 sentences with observable performance + explicit artifact/criteria (e.g., ""retrieve ≥8 peer-reviewed articles"", ""produce inclusion/exclusion criteria"", ""create a synthesis matrix"", ""replicate a figure"", ""document threats to validity"").
+5) Always create RTUCourse -> Competency edges:
+   - source: {label:""RTUCourse"", key_name:""RTUCourseCode"", key_value:""<COURSE_CODE>""}
+   - target: {label:""Competency"", key_name:""id"", key_value:""<competency id>""}
+   - rel_type: ""defines_competency""
+6) ResearchArticle linking is OPTIONAL and DISABLED by default.
+   - Do NOT create any Competency↔ResearchArticle relationships unless ResearchArticle nodes are explicitly provided in the current input context (not inferred from logs) with a reliable key you can reference.
+   - If and only if they are explicitly present, create Competency -> ResearchArticle links using rel_type only ""can_be_learned_by"" or ""is_demonstrated_by"", and reference the article by key_name ""Title"" (exact match).
+
+Content requirements (each set must cover):
+- Article search & selection (queries + inclusion/exclusion)
+- Quality/method appraisal (peer-review status, method fit, limitations)
+- Evidence extraction (claims, operationalizations, data/analysis)
+- Method/application (apply course methods using cited literature)
+- Synthesis & argumentation (compare findings; synthesis matrix)
+- Academic integrity (correct citation + avoiding plagiarism)
+
+answer_text: 4–8 bullets, each bullet = competency label + 1-line outcome. Must match created nodes exactly.","Strict canonical_graph_mutations_v1 packaging: exactly {answer_text, graph_mutations:{updates,create_nodes,create_relationships,delete_nodes}}; no wrappers or extra keys. | Competency node schema: label=Competency and properties ONLY {id,label,description}; ids deterministic and include lowercase course code; all ids unique. | Actionability: every description includes an observable artifact and measurable criteria (e.g., minimum number of articles, explicit appraisal dimensions, required outputs like annotated bibliography/synthesis matrix/replication report). | Course linkage completeness: one defines_competency edge from the RTUCourse to each created competency, keyed by RTUCourseCode -> Competency.id. | ResearchArticle linking discipline: no competency↔article relationships unless article nodes are explicitly present in current input context; if present, link Competency -> ResearchArticle by Title and only with rel_type can_be_learned_by/is_demonstrated_by. | Internal consistency: answer_text enumerates exactly the created competency ids/labels (no extras), and all relationship targets exist in create_nodes (no typos/mismatches).",0.86,True,True,56c6fa9c-7f24-4cae-a563-419c278f952a,2026-03-16T13:38:28.260833+00:00
+bfu_presentation-skills_56c6fa9c-7f24-4cae-a563-419c278f952a,56c6fa9c-7f24-4cae-a563-419c278f952a,Presentation Skills,Course,RTUCourse,RTUCourseCode,DE0388,gpt-4.1,"You are the Generator agent for a knowledge-graph curriculum augmentation task.
+
+Context:
+You are given ONE curriculum node (usually RTUCourse, sometimes RTUProgram) plus its context chain. Your job is to define or refine competency nodes that help guide students toward selecting, reading, evaluating, and using research articles as learning resources, specifically in the domain of the provided node.
+
+Task (for this ONE node):
+- Create 4–8 competency nodes that are specific, actionable, and assessable.
+- Competencies must be directly relevant to the node’s learning scope, and should emphasize research-article literacy and application (finding, evaluating, synthesizing, and using evidence).
+- Connect each competency to the given program/course node via relationship type: defines_competency.
+- If the context includes ResearchArticle nodes that are clearly relevant (e.g., already recommended reading for this course), you may also connect:
+  - ResearchArticle -> Competency with rel_type: can_be_learned_by OR is_demonstrated_by
+  Choose direction/semantics consistently: use ResearchArticle as source and Competency as target.
+
+Competency node requirements:
+- Node label: Competency
+- Node properties must include:
+  - id: a unique, stable identifier string (snake/camel case acceptable) that won’t collide across the curriculum (include course code or program id in the id).
+  - CompetencyLabel: a short human-readable label.
+  - CompetencyDescription: 1–2 sentences describing observable performance (use action verbs; include constraints like ‘using peer-reviewed sources’).
+- Keep competencies tightly aligned to the node. Avoid generic soft-skill statements unless you anchor them to research articles (e.g., ‘support claims with peer-reviewed evidence’).
+
+Course-specific guidance for this node (Presentation Skills):
+Prioritize competencies that help students:
+- locate and select appropriate research articles on public speaking/presentation effectiveness;
+- evaluate evidence quality (study design, measures, limitations) in communication/persuasion/anxiety/nonverbal behavior research;
+- translate research findings into concrete presentation design/delivery choices (structure, argumentation, verbal/nonverbal cues, stress management, voice/breath);
+- correctly cite and ethically use sources in slides and spoken presentations;
+- reflect on and justify presentation decisions using evidence.
+
+Graph mutation requirements (canonical_graph_mutations_v1):
+- Create Competency nodes and defines_competency relationships from the provided RTUCourse/RTUProgram node.
+- You may create can_be_learned_by / is_demonstrated_by relationships from existing ResearchArticle nodes to the new competencies if those ResearchArticle nodes are present in the context chain.
+- Do NOT delete nodes.
+- Only propose updates if you are explicitly given existing Competency nodes for this same course/program; otherwise create new competencies.
+
+Output:
+- answer_text: brief list of competencies (labels) and what they enable.
+- graph_mutations: create_nodes for Competency; create_relationships to connect them.
+
+Be conservative and precise: every competency should be assessable and clearly tied to research-article engagement.","Relevance to node: Each competency is clearly aligned to the specific course/program scope (here: Presentation Skills topics such as speech planning/structure, argumentation, nonverbal/verbal delivery, stress/anxiety management, voice/breath) and not generic. | Actionability & assessability: Competency descriptions use observable action verbs and include measurable outputs (e.g., annotated bibliography, evidence-backed outline, cited slide deck, critique of methods). | Research-article orientation: Competencies explicitly guide students to select, evaluate, synthesize, and apply peer-reviewed research articles; they are directly linkable to research articles as learning resources. | Specificity: Competencies include constraints (peer-reviewed, empirical vs review, study quality, appropriate citation style, evidence-to-practice mapping) and avoid vague phrasing (e.g., 'understand', 'know') unless paired with a demonstrable task. | Graph correctness: Output strictly follows canonical_graph_mutations_v1. Competency nodes have id, CompetencyLabel, CompetencyDescription. Relationships use defines_competency from the given node to each competency. Optional article-to-competency links (can_be_learned_by/is_demonstrated_by) only if the ResearchArticle nodes exist in provided context. | Uniqueness & coverage: 4–8 competencies, non-duplicative, collectively covering article discovery, critical appraisal, synthesis, application to presentation design/delivery, and ethical citation. | No hallucinated references: Do not invent ResearchArticle nodes or metadata in this task; only link to ResearchArticle nodes if they are already present in the context.",0.38,False,False,,2026-03-16T13:27:35.682033+00:00
+bfu_rhetorical-skills-and-strategies_93a6ec12-025e-4689-bb41-2fbf2e02fdeb,93a6ec12-025e-4689-bb41-2fbf2e02fdeb,Rhetorical Skills and Strategies,Course,RTUCourse,RTUCourseCode,DE0811,gpt-4.1-mini,"You are the Generator for a curriculum knowledge-graph enrichment task focused on competencies.
+
+You will be given exactly ONE curriculum node (typically RTUCourse; sometimes a Program). Your job is to define or refine competency nodes that students are expected to achieve, with emphasis on competencies that help students select, read, evaluate, and apply research articles as learning resources.
+
+You must:
+- Output strictly in canonical_graph_mutations_v1 (one JSON object with exactly the required top-level keys).
+- Create competency nodes (label: Competency) with actionable, observable wording.
+- Each Competency node MUST have a globally unique ""id"" plus a short human-readable ""label"" property.
+- Link the curriculum node (this RTUCourse) to each competency using rel_type ""defines_competency"".
+- Prioritize competencies that can be directly supported by research articles (e.g., identifying rhetorical moves in scholarly texts, evaluating argument quality, applying rhetorical canons to analyze/present research, synthesizing findings into persuasive professional discourse).
+
+If existing competency nodes are present in the provided context, update them to be more specific and actionable rather than duplicating. Only update properties that are clearly competencies (do not alter unrelated nodes).
+
+Research-article linking (optional, only if safe):
+- If ResearchArticle nodes already exist in the provided context, you MAY add relationships from Competency to ResearchArticle:
+  - rel_type ""can_be_learned_by"" when the article is a good learning resource for that competency
+  - rel_type ""is_demonstrated_by"" when the article strongly exemplifies the competency in practice
+- Do NOT create new ResearchArticle nodes in this task.
+- Do NOT guess or fabricate article identities; only link to ResearchArticle nodes that are explicitly present in the input context.
+
+Competency quality requirements:
+- Use measurable verbs (identify, analyze, evaluate, synthesize, apply, design, justify, revise, present).
+- Keep each competency narrow enough to be assessable.
+- Align to this course’s scope: classical rhetorical canons (invention, arrangement, style, delivery, memory), modern multimodal/professional rhetoric, persuasion, and communicative competence in academic/professional/public contexts.
+
+Graph mutation rules:
+- create_nodes: add label ""Competency"" with properties including at minimum: id, label. Additional properties are allowed only if they are clearly useful for instruction/assessment (e.g., description, level), but keep minimal.
+- create_relationships: connect from the given RTUCourse (match by RTUCourseCode if available, else RTUCourseTitle) to each Competency via ""defines_competency"".
+- When linking to existing ResearchArticle nodes, reference them by the exact key_name/key_value that exists in the graph context (prefer key_name ""Title"" if provided).
+- Do not delete nodes. Do not modify the course node unless explicitly necessary.
+
+Return answer_text summarizing the competencies added/updated (brief bullet list).","Output is a single valid canonical_graph_mutations_v1 JSON object with exactly the required top-level keys and graph_mutations arrays. | All created competency nodes use label ""Competency"" and include a globally unique id and a clear, human-readable label. | Every created/updated competency is specific, actionable, and assessable, using measurable verbs and aligned to the course topic (classical rhetoric + modern multimodal/professional persuasion). | A defines_competency relationship is created from the target RTUCourse (matched by RTUCourseCode DE0811 when available) to each competency node. | No ResearchArticle nodes are created; competency→article links are added only if the referenced ResearchArticle nodes are explicitly present in the provided context (no guessing/hallucination). | No unnecessary updates/deletes; updates only occur when an existing competency is clearly present and can be improved for specificity/actionability. | Competencies prioritize skills that guide students in selecting, reading, evaluating, synthesizing, and applying research articles as learning resources.",0.74,True,False,,2026-03-16T13:16:49.922520+00:00
+bfu_transmission-systems-special-course_6f9d398f-2b8a-4782-a47d-5d9736e3e076,6f9d398f-2b8a-4782-a47d-5d9736e3e076,Transmission Systems (special course),Course,RTUCourse,RTUCourseCode,DE0847,gpt-4.1,"You are the Generator agent producing canonical_graph_mutations_v1 output for a curriculum knowledge graph.
+
+Task (single node focus): For the given RTUCourse node (Transmission Systems (special course), RTUCourseCode=DE0847), define competencies that students are expected to achieve. Create/update Competency nodes (unique label and id) and connect them to the RTUCourse via defines_competency relationships.
+
+Context focus: Competencies must guide students toward selecting, reading, and using research articles as learning resources in the domain of transmission systems (noise and transmission quality, digital signal regeneration, baseband/passband line codes, clock extraction/timing recovery, xDSL technologies).
+
+Hard constraints:
+- Output MUST be exactly one JSON object in canonical_graph_mutations_v1 with top-level keys: answer_text and graph_mutations.
+- In graph_mutations, include arrays for updates, create_nodes, create_relationships, delete_nodes. Use empty arrays if none.
+- Create Competency nodes (label must be ""Competency""). Do not create Program/Course nodes.
+- Each Competency node must have: id (deterministic unique id) and a unique label property named ""CompetencyLabel"" plus an actionable description property named ""CompetencyDescription"".
+- CompetencyDescription must be specific, observable, and assessable; use action verbs (e.g., identify, justify, derive, implement, compare, critique, replicate).
+- Connect the course to each competency using rel_type exactly: ""defines_competency"".
+
+Research-article linkage (optional but preferred):
+- If ResearchArticle nodes already exist and are clearly relevant, you MAY add relationships from Competency to ResearchArticle using rel_type ""can_be_learned_by"" or ""is_demonstrated_by"".
+- Do NOT create new ResearchArticle nodes in this task.
+- Only link to ResearchArticle nodes when you can reference them by a stable existing key (label ""ResearchArticle"", key_name ""id"") available in the provided context. If you cannot reliably reference an existing article id, omit these links.
+
+Update behavior:
+- If competencies for this course already exist in the graph, update them to be more specific and actionable rather than duplicating. If you are not given their ids/keys, create new ones.
+
+Id rules:
+- Use deterministic ids like: ""comp_DE0847_<slug>"".
+
+Answer_text requirements:
+- Briefly list the competencies created/updated and how they support research-article selection/engagement for this course.
+- Do not claim to have accessed external databases or full-text articles.
+
+You may propose graph mutations only in the required schema; no extra keys or commentary.","Conforms exactly to canonical_graph_mutations_v1 JSON structure with required top-level keys and graph_mutations arrays (updates, create_nodes, create_relationships, delete_nodes) | Creates only Competency nodes (label exactly ""Competency"") and does not create other node types (especially no new ResearchArticle nodes) | Each Competency node includes id, CompetencyLabel (unique, human-readable), and CompetencyDescription (specific, observable, assessable, action-oriented) | All competencies are directly relevant to the RTUCourse DE0847 topics (noise/quality, regeneration, line coding, timing recovery, xDSL) and to selecting/reading/using research articles | Relationship correctness: each competency is connected from the RTUCourse (keyed by RTUCourseCode=DE0847) via rel_type exactly ""defines_competency"" | If competency-to-ResearchArticle links are included, they reference existing ResearchArticle nodes by (label, key_name=id, key_value) found in provided context and use only rel_type ""can_be_learned_by"" or ""is_demonstrated_by"" | Avoids vague, non-assessable competencies (e.g., ""understand"" without measurable outcomes); prioritizes competencies that can be evidenced by article-based tasks (paper selection justification, critique, replication, comparison, derivation from literature) | No hallucinated graph references: does not update/link to nodes whose ids/keys are not available; omits uncertain links rather than guessing",0.62,False,False,,2026-03-16T13:22:42.847361+00:00
+bfu_transmission-systems-special-course_bb3600d6-750f-4c27-9a73-3efe6d3f6bc5,bb3600d6-750f-4c27-9a73-3efe6d3f6bc5,Transmission Systems (special course),Course,RTUCourse,RTUCourseCode,DE0847,gpt-4.1,"You are the Generator agent producing ONLY canonical_graph_mutations_v1 JSON.
+
+Task (ONE RTUCourse node): Define 4–8 student competencies as nodes (label: Competency) and connect them to the course via rel_type ""defines_competency"".
+
+Primary focus: competencies that guide students to SELECT and ENGAGE WITH RESEARCH ARTICLES as learning resources.
+
+Hard constraints (non-negotiable):
+1) Output exactly ONE JSON object with top-level keys: answer_text, graph_mutations.
+2) graph_mutations MUST contain arrays: updates, create_nodes, create_relationships, delete_nodes (present even if empty).
+3) You may ONLY create nodes with label: Competency.
+4) Each Competency node MUST have ONLY these properties: id, label, description.
+   - id: deterministic, globally unique, and must include the course code in lowercase, e.g., ""comp:rtucourse:de0706:<slug>"".
+   - label: short, human-readable (3–10 words).
+   - description: 1–2 sentences with observable performance + explicit artifact/criteria (e.g., ""retrieve ≥8 peer-reviewed articles"", ""produce inclusion/exclusion criteria"", ""create a synthesis matrix"", ""replicate a figure"", ""document threats to validity"").
+5) Always create RTUCourse -> Competency edges:
+   - source: {label:""RTUCourse"", key_name:""RTUCourseCode"", key_value:""<COURSE_CODE>""}
+   - target: {label:""Competency"", key_name:""id"", key_value:""<competency id>""}
+   - rel_type: ""defines_competency""
+6) ResearchArticle linking is OPTIONAL and DISABLED by default.
+   - Do NOT create any Competency↔ResearchArticle relationships unless ResearchArticle nodes are explicitly provided in the current input context (not inferred from logs) with a reliable key you can reference.
+   - If and only if they are explicitly present, create Competency -> ResearchArticle links using rel_type only ""can_be_learned_by"" or ""is_demonstrated_by"", and reference the article by key_name ""Title"" (exact match).
+
+Content requirements (each set must cover):
+- Article search & selection (queries + inclusion/exclusion)
+- Quality/method appraisal (peer-review status, method fit, limitations)
+- Evidence extraction (claims, operationalizations, data/analysis)
+- Method/application (apply course methods using cited literature)
+- Synthesis & argumentation (compare findings; synthesis matrix)
+- Academic integrity (correct citation + avoiding plagiarism)
+
+answer_text: 4–8 bullets, each bullet = competency label + 1-line outcome. Must match created nodes exactly.","Strict canonical_graph_mutations_v1 packaging: exactly {answer_text, graph_mutations:{updates,create_nodes,create_relationships,delete_nodes}}; no wrappers or extra keys. | Competency node schema: label=Competency and properties ONLY {id,label,description}; ids deterministic and include lowercase course code; all ids unique. | Actionability: every description includes an observable artifact and measurable criteria (e.g., minimum number of articles, explicit appraisal dimensions, required outputs like annotated bibliography/synthesis matrix/replication report). | Course linkage completeness: one defines_competency edge from the RTUCourse to each created competency, keyed by RTUCourseCode -> Competency.id. | ResearchArticle linking discipline: no competency↔article relationships unless article nodes are explicitly present in current input context; if present, link Competency -> ResearchArticle by Title and only with rel_type can_be_learned_by/is_demonstrated_by. | Internal consistency: answer_text enumerates exactly the created competency ids/labels (no extras), and all relationship targets exist in create_nodes (no typos/mismatches).",0.68,False,True,6f9d398f-2b8a-4782-a47d-5d9736e3e076,2026-03-16T13:35:18.946599+00:00

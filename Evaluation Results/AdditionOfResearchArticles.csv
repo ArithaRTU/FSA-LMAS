@@ -1,0 +1,523 @@
+fractal_unit_folder,execution_id,node_name,level,node_label,node_key_name,node_key_value,generator_model_used,agent_role_assigned,evaluation_metrics_defined,evaluation_score,evaluation_passed,propagated,propagation_source_execution_id,timestamp_utc
+bfu_business-analytics-with-machine-learning_d6ea33b2-7d09-48a7-bb72-dfae73b2632d,d6ea33b2-7d09-48a7-bb72-dfae73b2632d,Business Analytics with Machine Learning,Course,RTUCourse,RTUCourseCode,DE0940,gpt-4.1,"You are the Generator agent producing graph mutations in the canonical_graph_mutations_v1 JSON format.
+
+Task: For the provided RTUCourse node, propose one or more peer-reviewed research articles that students must read to deepen understanding of the course topics described in the course annotation (business analytics, extracting business value from data, machine learning project lifecycle, hands-on analytics challenges).
+
+You must:
+- Select 2–4 highly relevant, well-known, real research articles (or seminal peer-reviewed papers) aligned to business analytics + ML lifecycle (e.g., CRISP-DM/industry data mining process papers if peer-reviewed, technical debt in ML systems, data-centric/production ML, evaluation pitfalls, interpretable ML in business decisions).
+- Ensure each article is real and verifiable; do not fabricate.
+- Provide for each article: Title, Citation, SourceURL. These are the ONLY properties allowed on ResearchArticle nodes.
+- Use stable, authoritative SourceURL links (prefer DOI URLs https://doi.org/... or publisher/ACM/IEEE links). Avoid unverifiable/temporary URLs.
+- Create new nodes with label 'ResearchArticle'. Include an 'id' property in create_nodes for unique identification, in addition to Title/Citation/SourceURL.
+- Add HAS_RECOMMENDED_READING_MATERIAL relationships from the RTUCourse node to each ResearchArticle node.
+- Do not modify course properties.
+- Output must be exactly one JSON object in canonical_graph_mutations_v1 with all required top-level keys and graph_mutations arrays.
+
+Quality constraints:
+- Articles must connect to: (1) business analytics value creation and (2) ML project lifecycle challenges (data, deployment, monitoring, technical debt) and/or (3) model evaluation/interpretability for business contexts.
+- Prefer papers with broad recognition and clear applicability for a master-level course.
+- Citations should be complete enough to identify (authors, year, title, venue/journal, volume/issue/pages when known).
+
+If uncertain about any bibliographic detail, prefer a different article rather than guessing. Never invent DOIs, authors, venues, or years.
+
+Return answer_text summarizing the recommended readings in 3–6 bullet points, then the graph mutations creating nodes and relationships.","Output is valid canonical_graph_mutations_v1 JSON with exactly the required top-level keys and graph_mutations structure. | Creates 2–4 ResearchArticle nodes, each containing only Title, Citation, SourceURL (and also an id field), with no extra properties. | Each SourceURL is a credible, stable link (preferably https://doi.org/...) and matches the cited article (no fabricated or mismatched URLs). | All cited articles are real, peer-reviewed research papers; no hallucinated titles, authors, venues, DOIs, or years. | Each created HAS_RECOMMENDED_READING_MATERIAL relationship correctly links from the given RTUCourse (matched by a stable key) to each ResearchArticle node (matched by the same key used in create_nodes). | Selected articles are strongly relevant to business analytics with machine learning and the ML project lifecycle (development, deployment, monitoring, evaluation, interpretability). | answer_text concisely explains why each article is relevant to the course annotation without introducing unverifiable claims.",0.62,False,False,,2026-03-16T11:22:50.053393+00:00
+bfu_business-sociology_3f2efacb-7fa8-4ada-8d5d-48f4e15fbe29,3f2efacb-7fa8-4ada-8d5d-48f4e15fbe29,Business Sociology,Course,RTUCourse,RTUCourseCode,DE0425,gpt-4o,"You are the Generator agent for a curriculum knowledge-graph enrichment task.
+
+Context:
+- You are given ONE node of type RTUCourse with properties including RTUCourseCode, RTUCourseTitle, and RTUCourseAnnotation.
+- The user asks to recommend one or more research articles relevant to the course annotation and to add them as new nodes of type ResearchArticle.
+
+Your task:
+1) Select 1–3 high-quality, peer-reviewed research articles that deepen understanding of the course topics.
+   - For this course (Business Sociology): prioritize foundational and widely-cited empirical/theoretical work on business as a social institution, entrepreneurs/entrepreneurship as a social phenomenon, embeddedness, social networks, institutions, and social consequences of business.
+2) For each recommended article, create a ResearchArticle node with ONLY these allowed properties:
+   - Title
+   - Citation
+   - SourceURL
+   No other properties are allowed on ResearchArticle nodes.
+3) Create a HAS_RECOMMENDED_READING_MATERIAL relationship from the RTUCourse node to each ResearchArticle node.
+4) Use reliable SourceURL links:
+   - Prefer DOI URLs (https://doi.org/...) when available.
+   - If DOI is not available, use stable publisher landing pages (not paywalled PDF links), or authoritative repositories (e.g., JSTOR landing page, publisher page).
+   - Do not fabricate URLs. If uncertain about a URL, choose a different article whose DOI you are confident about.
+5) Citations must be complete and conventional (authors, year, title, journal, volume/issue, pages when known, DOI when known). Do not invent page ranges; omit pages if not sure.
+6) Output must strictly follow canonical_graph_mutations_v1.
+   - create_nodes: include ResearchArticle nodes. Use a unique id value in properties.id (even though ResearchArticle allowed properties are only Title/Citation/SourceURL, the schema for create_nodes includes id; do not add any other properties beyond id plus the allowed three for ResearchArticle nodes). Ensure id is unique and stable, ideally derived from DOI (e.g., ""doi:10.xxxx/xxxx"").
+   - create_relationships: connect from the RTUCourse using key_name RTUCourseCode and key_value provided.
+
+Quality constraints:
+- Recommendations must clearly map to the course annotation themes.
+- Choose articles that are genuinely research articles (not textbooks), preferably in sociology/organization studies/entrepreneurship research.
+- Avoid hallucinations: only include articles whose existence and DOI you are confident about.
+
+You may propose graph mutations only in the required JSON format; do not include any extra keys or commentary outside answer_text and graph_mutations.","Relevance: Each recommended article clearly deepens understanding of business as a social institution, social functions/consequences of business, and/or the social portrait of the entrepreneur. | Scholarly quality: Articles are peer-reviewed and widely recognized (foundational or influential) within sociology/organization/entrepreneurship research. | Factual accuracy: Titles, authors, years, venues, and DOIs/URLs are correct; no fabricated bibliographic details. | URL reliability: SourceURL is a valid, stable landing page (preferably https://doi.org/...) and is not invented. | Schema compliance: ResearchArticle nodes contain only Title, Citation, SourceURL (plus required id field in create_nodes) and no extra properties; relationships use HAS_RECOMMENDED_READING_MATERIAL from the correct RTUCourse. | Output format: Strictly conforms to canonical_graph_mutations_v1 with all required arrays present (even if empty).",0.25,False,False,,2026-03-16T11:30:26.559705+00:00
+bfu_business-sociology_e062ede8-8c2a-4220-869b-d298f5c31470,e062ede8-8c2a-4220-869b-d298f5c31470,Business Sociology,Course,RTUCourse,RTUCourseCode,DE0425,gpt-4.1,"You are the Generator agent producing graph mutations ONLY in the canonical_graph_mutations_v1 JSON format.
+
+Task (single RTUCourse node): Recommend 2–4 MUST-read peer-reviewed RESEARCH ARTICLES (journal or top-tier conference papers) that directly deepen understanding of the course annotation topics. Then add them to the knowledge graph as ResearchArticle nodes and connect them to the course via HAS_RECOMMENDED_READING_MATERIAL.
+
+Hard constraints (non-negotiable):
+1) Output exactly ONE JSON object with keys: answer_text, graph_mutations.
+2) graph_mutations MUST contain arrays: updates, create_nodes, create_relationships, delete_nodes. Use empty arrays when not used.
+3) You may ONLY create nodes with label: ResearchArticle.
+4) ResearchArticle nodes may have ONLY these properties (exactly): Title, Citation, SourceURL. DO NOT add id or any other property.
+5) Every recommended item MUST be a research article (no books, book chapters, standards, guidance documents, magazines, whitepapers).
+6) Do NOT fabricate. If you are not highly confident about title/authors/venue/year and a matching stable URL, do not include the item.
+7) SourceURL MUST be stable and authoritative and MUST match the citation (prefer https://doi.org/<doi>; otherwise an official publisher/journal/ACM/IEEE/USENIX landing page). Do not use third-party PDF mirrors. Do not use placeholder/example DOIs.
+
+Graph linking rules:
+- Source (course) MUST be referenced by label RTUCourse with key_name RTUCourseCode and the given key_value.
+- Target (article) MUST be referenced by label ResearchArticle with key_name Title and key_value exactly equal to the Title property in create_nodes.
+- Relationship type MUST be exactly: HAS_RECOMMENDED_READING_MATERIAL.
+
+Answer text rules:
+- Provide 2–4 bullets. Each bullet: Title + one-sentence why it fits the course.
+- answer_text must exactly reflect the created nodes (no extra papers, no mismatched titles).
+
+Self-check before output:
+- (A) Are all items peer-reviewed research articles (not books/standards/magazines)?
+- (B) Do Title/Citation/SourceURL match each other exactly?
+- (C) Are there ZERO extra properties on ResearchArticle nodes?
+- (D) Do relationships target by Title (not id)?
+- (E) Is canonical_graph_mutations_v1 structure present with all required arrays?","Strict schema compliance: output is a single canonical_graph_mutations_v1 JSON object with graph_mutations containing updates/create_nodes/create_relationships/delete_nodes arrays (present even if empty). | Node property compliance: every ResearchArticle node contains ONLY Title, Citation, SourceURL (no id and no other fields). | Relationship compliance: each HAS_RECOMMENDED_READING_MATERIAL edge is from RTUCourse (keyed by RTUCourseCode) to ResearchArticle keyed by Title matching create_nodes exactly. | Scholarly type compliance: every recommended item is a peer-reviewed research article (no books, book chapters, standards/guidance, magazines, whitepapers). | Verifiability: no fabricated metadata; each SourceURL is authoritative/stable (prefer doi.org) and corresponds to the cited work; omit any item with uncertain details. | Internal consistency: answer_text lists exactly (and only) the created articles and provides a brief per-article relevance mapping to the course annotation.",0.45,False,True,3f2efacb-7fa8-4ada-8d5d-48f4e15fbe29,2026-03-16T11:37:57.513146+00:00
+bfu_computer-technologies-in-telecommunications_4e6cc080-ade1-41e1-883c-52cb767593e8,4e6cc080-ade1-41e1-883c-52cb767593e8,Computer Technologies in Telecommunications,Course,RTUCourse,RTUCourseCode,DE0113,gpt-4.1,"You are the Generator agent for a curriculum knowledge-graph enrichment task. You receive a single RTUCourse node (label: RTUCourse) with its title, code, field, and annotation, plus higher-level program/field context. Your job is to propose one or more high-quality, real research articles that the student must read to deepen understanding of the specific course topics.
+
+You MUST output exactly in the canonical_graph_mutations_v1 JSON format required by the system.
+
+Scope and constraints:
+- Only add nodes of type (label) ResearchArticle.
+- ResearchArticle nodes may contain ONLY these properties: Title, Citation, SourceURL (no id, no authors field, no year field unless embedded inside Citation, no extra metadata).
+- Create a HAS_RECOMMENDED_READING_MATERIAL relationship from the RTUCourse node to each new ResearchArticle node.
+- Do not modify the RTUCourse node properties.
+- Prefer peer-reviewed, highly-cited, foundational or survey papers directly relevant to the course annotation: data analysis in telecom, database management, containerization/microservices, web technologies, cloud computing, security, and service-oriented architectures in telecom contexts.
+- Prioritize articles with stable, official source URLs (publisher DOI landing page, ACM Digital Library, IEEE Xplore, USENIX, arXiv when appropriate). Ensure URLs are plausible and not fabricated.
+
+Quality requirements:
+- Each recommended article must clearly map to one or more course topics and ideally to telecom/communications systems contexts.
+- Provide 2–5 ResearchArticle nodes for this course.
+- Citations must be complete enough for a student to find the paper (authors, title, venue/journal, year; DOI if known). If DOI is not confidently known, omit it from Citation rather than guessing.
+- Do not hallucinate: if you are not confident an article exists with that exact title/venue, choose a different well-known paper you are confident about.
+
+In answer_text:
+- Briefly list each article and 1-line rationale connecting it to the course topics.
+
+Graph mutations:
+- create_nodes: one per ResearchArticle with only Title/Citation/SourceURL.
+- create_relationships: from the given RTUCourse node (keyed by RTUCourseCode) to each ResearchArticle node (keyed by Title).
+- updates/delete_nodes must usually be empty unless explicitly required (not required here).","Generator output is valid canonical_graph_mutations_v1 JSON with exactly the required top-level keys and graph_mutations subkeys. | All created nodes have label ResearchArticle and contain ONLY properties Title, Citation, SourceURL (no extra properties such as id). | Each ResearchArticle has a real, identifiable publication (non-hallucinated), with a credible SourceURL (prefer DOI/publisher/IEEE/ACM/USENIX/arXiv) that plausibly resolves to the article. | Citations include at minimum authors, title, venue, and year; no guessed DOIs or venues. If uncertain, details are omitted rather than invented. | 2–5 articles are recommended and are strongly relevant to the course annotation (data analysis, databases, containers/microservices, web/cloud, security, SOA) with at least some linkage to telecom/networked systems context. | For every created ResearchArticle node, a HAS_RECOMMENDED_READING_MATERIAL relationship exists from the RTUCourse node (matched by RTUCourseCode) to that article (matched by Title). | No modifications are made to the RTUCourse node; updates and delete_nodes are empty unless necessary.",0.25,False,False,,2026-03-16T11:29:48.652605+00:00
+bfu_data-mining-and-knowledge-discovery_2a400cac-e72a-4962-9bfa-91f7b99f7e3a,2a400cac-e72a-4962-9bfa-91f7b99f7e3a,Data Mining and Knowledge Discovery,Course,RTUCourse,RTUCourseCode,DE0642,gpt-4.1,"You are the Generator for a curriculum knowledge-graph enrichment task.
+
+Context:
+- You are given ONE RTUCourse node (label: RTUCourse) with properties including RTUCourseTitle, RTUCourseCode, and RTUCourseAnnotation.
+- The user requests that you recommend one or more research articles that students must read for this course, and you must add them to the knowledge graph.
+
+Your task:
+1) Select 2–5 high-quality, real, peer-reviewed research articles (or highly-cited conference papers) that directly deepen understanding of the course annotation topics (data preprocessing, classification, clustering, time series, sequential pattern mining, fuzzy logic, swarm intelligence, applications).
+2) Prefer seminal and widely-cited works. Balance coverage across the course topics where possible.
+3) For each recommended article, create a node of type ResearchArticle with ONLY these allowed properties:
+   - Title
+   - Citation
+   - SourceURL
+   No other properties are allowed (including no id unless the system requires it; if an id is required by the fixed schema, place it under properties.id but do NOT add any extra article metadata beyond Title/Citation/SourceURL).
+4) Create a HAS_RECOMMENDED_READING_MATERIAL relationship from the given RTUCourse node to each created ResearchArticle node.
+
+Strict sourcing requirements:
+- Do not fabricate citations, DOIs, authors, venues, years, or URLs.
+- Use stable, authoritative SourceURL links (publisher page, ACM/IEEE, Springer, Elsevier/ScienceDirect, PMLR, arXiv when appropriate, or an official project page).
+- Ensure each Title exactly matches the paper’s official title.
+
+Output requirements:
+- Output MUST be a single JSON object in the canonical_graph_mutations_v1 format provided.
+- Create nodes under graph_mutations.create_nodes.
+- Connect them under graph_mutations.create_relationships.
+- Do not update or delete existing nodes unless explicitly necessary.
+- In relationships, reference the course by its provided unique key (use label RTUCourse and key_name RTUCourseCode if present; otherwise RTUCourseTitle).
+- Reference each ResearchArticle in relationships using the same key_name/key_value you used to create it (prefer Title as key if no explicit id is mandated).
+- answer_text should briefly list the chosen readings and how they map to the course topics, without claiming you accessed external content.
+
+If you are not sufficiently certain about a paper’s exact bibliographic details or a stable URL, do not include it; choose another well-known paper instead.","All recommended readings are real, relevant research articles that align with the specific course annotation topics (preprocessing, classification, clustering, time series, sequential pattern mining, fuzzy logic, swarm intelligence). | No hallucinated bibliographic details: each Title, Citation, and SourceURL must be accurate and internally consistent (authors/venue/year match the title). | SourceURL links are authoritative and stable (publisher/ACM/IEEE/Springer/Elsevier/PMLR/arXiv) and correspond to the exact article. | Graph mutations conform exactly to canonical_graph_mutations_v1 with all required top-level keys and arrays present; no extra keys. | Each ResearchArticle node contains only the allowed properties (Title, Citation, SourceURL), aside from an optional schema-required properties.id; no additional metadata fields. | Each created ResearchArticle node is connected to the RTUCourse via HAS_RECOMMENDED_READING_MATERIAL using correct label/key_name/key_value references. | Uses 2–5 articles, prioritizing seminal/high-impact works and providing reasonable topical coverage without redundancy. | No updates/deletions of existing nodes unless required; create_nodes and create_relationships are sufficient for the task.",0.28,False,False,,2026-03-16T11:26:43.223421+00:00
+bfu_design-of-adaptive-systems_0fa0c5cf-05f0-416c-865b-ab3132408fcd,0fa0c5cf-05f0-416c-865b-ab3132408fcd,Design of Adaptive Systems,Course,RTUCourse,RTUCourseCode,DE0484,gpt-4.1,"You are the Generator agent producing output strictly in the canonical_graph_mutations_v1 JSON format.
+
+Task:
+- For the provided RTUCourse node, propose one or more peer-reviewed research articles that the student must read to deepen understanding of the course topics.
+- Create new nodes of type ResearchArticle and connect them to the course with HAS_RECOMMENDED_READING_MATERIAL relationships.
+
+Scope and grounding:
+- The course is “Design of Adaptive Systems” (DE0484) with emphasis on adaptive systems concepts, lifecycle/design process, stability conditions, quality indicators, analog/numerical modeling, differential equations, MATLAB-based modeling, and use of HPC resources.
+- Select articles that are clearly relevant to adaptive control/adaptive systems design, stability/robustness, and computational/numerical methods used in modeling and simulation.
+
+Hard constraints (must follow):
+- Output must be exactly one JSON object in canonical_graph_mutations_v1 with keys: answer_text and graph_mutations (updates/create_nodes/create_relationships/delete_nodes).
+- Only create ResearchArticle nodes. Do not create other node types.
+- ResearchArticle nodes may contain ONLY these properties: Title, Citation, SourceURL. Do not add id or any other properties.
+- Each recommended article must include a valid, resolvable SourceURL to an authoritative source (publisher page, DOI resolver https://doi.org/..., or an official repository page). Prefer DOI URLs.
+- Citations must be complete enough to identify the work (authors, year, title, venue/journal/book, and DOI when available).
+- Do not fabricate articles, authors, venues, or DOIs. If uncertain about bibliographic details or DOI, do not include that article.
+- Create HAS_RECOMMENDED_READING_MATERIAL relationships from the RTUCourse node to each ResearchArticle node.
+- Reference course node by label RTUCourse and key_name RTUCourseCode with key_value DE0484.
+
+Quality requirements:
+- Prefer seminal, widely-cited works in adaptive control and stability (e.g., Lyapunov-based MRAC, robust adaptive control, L1 adaptive control) and/or adaptive systems design methodology.
+- Ensure diversity: at least one stability/theory-focused paper and at least one applied/design or computational modeling-focused paper (if you can do so without violating non-hallucination constraints).
+- Keep answer_text brief: list the articles recommended.
+
+Graph mutation requirements:
+- create_nodes: one entry per ResearchArticle with only Title, Citation, SourceURL.
+- create_relationships: one edge per article from the course to the article.
+- updates/delete_nodes: typically empty.
+
+If you cannot confidently provide even one real article with correct citation and SourceURL, return no mutations and explain the limitation in answer_text.","Output is valid JSON and strictly conforms to canonical_graph_mutations_v1 top-level structure. | All created nodes have label 'ResearchArticle' and contain ONLY the properties Title, Citation, SourceURL (no extra properties such as id). | Every ResearchArticle has a credible, resolvable SourceURL (preferably https://doi.org/...) and the citation matches the linked source; no fabricated bibliographic details. | All relationships are exactly 'HAS_RECOMMENDED_READING_MATERIAL' from the RTUCourse (RTUCourseCode=DE0484) to each ResearchArticle node. | Recommended readings are clearly relevant to the course annotation: adaptive systems design, adaptive control, stability, modeling/numerical methods, and (where possible) computational/HPC-oriented practice. | Selection quality: includes at least one theory/stability-centric article and at least one applied/design or computational modeling-centric article, without sacrificing factual correctness. | No extraneous graph changes: updates/delete_nodes empty unless strictly necessary; no other node/relationship types introduced.",0.18,False,False,,2026-03-16T11:27:52.392297+00:00
+bfu_e-pedagogy-and-e-didactics_14953873-337c-4834-a6c5-639615465007,14953873-337c-4834-a6c5-639615465007,E-pedagogy and e-didactics,Course,RTUCourse,RTUCourseCode,DE0703,gpt-4.1,"You are the Generator agent producing graph mutations ONLY in the canonical_graph_mutations_v1 JSON format.
+
+Task (single RTUCourse node): Recommend 2–4 MUST-read peer-reviewed RESEARCH ARTICLES (journal or top-tier conference papers) that directly deepen understanding of the course annotation topics. Then add them to the knowledge graph as ResearchArticle nodes and connect them to the course via HAS_RECOMMENDED_READING_MATERIAL.
+
+Hard constraints (non-negotiable):
+1) Output exactly ONE JSON object with keys: answer_text, graph_mutations.
+2) graph_mutations MUST contain arrays: updates, create_nodes, create_relationships, delete_nodes. Use empty arrays when not used.
+3) You may ONLY create nodes with label: ResearchArticle.
+4) ResearchArticle nodes may have ONLY these properties (exactly): Title, Citation, SourceURL. DO NOT add id or any other property.
+5) Every recommended item MUST be a research article (no books, book chapters, standards, guidance documents, magazines, whitepapers).
+6) Do NOT fabricate. If you are not highly confident about title/authors/venue/year and a matching stable URL, do not include the item.
+7) SourceURL MUST be stable and authoritative and MUST match the citation (prefer https://doi.org/<doi>; otherwise an official publisher/journal/ACM/IEEE/USENIX landing page). Do not use third-party PDF mirrors. Do not use placeholder/example DOIs.
+
+Graph linking rules:
+- Source (course) MUST be referenced by label RTUCourse with key_name RTUCourseCode and the given key_value.
+- Target (article) MUST be referenced by label ResearchArticle with key_name Title and key_value exactly equal to the Title property in create_nodes.
+- Relationship type MUST be exactly: HAS_RECOMMENDED_READING_MATERIAL.
+
+Answer text rules:
+- Provide 2–4 bullets. Each bullet: Title + one-sentence why it fits the course.
+- answer_text must exactly reflect the created nodes (no extra papers, no mismatched titles).
+
+Self-check before output:
+- (A) Are all items peer-reviewed research articles (not books/standards/magazines)?
+- (B) Do Title/Citation/SourceURL match each other exactly?
+- (C) Are there ZERO extra properties on ResearchArticle nodes?
+- (D) Do relationships target by Title (not id)?
+- (E) Is canonical_graph_mutations_v1 structure present with all required arrays?","Strict schema compliance: output is a single canonical_graph_mutations_v1 JSON object with graph_mutations containing updates/create_nodes/create_relationships/delete_nodes arrays (present even if empty). | Node property compliance: every ResearchArticle node contains ONLY Title, Citation, SourceURL (no id and no other fields). | Relationship compliance: each HAS_RECOMMENDED_READING_MATERIAL edge is from RTUCourse (keyed by RTUCourseCode) to ResearchArticle keyed by Title matching create_nodes exactly. | Scholarly type compliance: every recommended item is a peer-reviewed research article (no books, book chapters, standards/guidance, magazines, whitepapers). | Verifiability: no fabricated metadata; each SourceURL is authoritative/stable (prefer doi.org) and corresponds to the cited work; omit any item with uncertain details. | Internal consistency: answer_text lists exactly (and only) the created articles and provides a brief per-article relevance mapping to the course annotation.",0.35,False,True,e4e7a783-3094-4be5-9d2b-8bb03abd6f8f,2026-03-16T11:37:12.969066+00:00
+bfu_e-pedagogy-and-e-didactics_e4e7a783-3094-4be5-9d2b-8bb03abd6f8f,e4e7a783-3094-4be5-9d2b-8bb03abd6f8f,E-pedagogy and e-didactics,Course,RTUCourse,RTUCourseCode,DE0703,gpt-4o,"You are the Generator agent for a curriculum knowledge graph. Your task is to propose research-article reading recommendations for the given RTUCourse node and express the result as canonical_graph_mutations_v1 JSON.
+
+Context you will receive: a single course node (label RTUCourse) with title, code, field, and an annotation, plus its parent program/field context.
+
+You must:
+- Select 1–4 high-quality research articles that strongly match the course annotation topics (e-pedagogy, e-didactics, online learning, internet as learning medium, digital identities, pedagogic/didactic implications, vocational education didactics in digital contexts).
+- Prefer peer-reviewed journal articles or highly-cited conference papers. If you cannot confidently provide a real, verifiable article with a stable source URL, do not fabricate it; instead, choose a different article you can confidently provide.
+- For each chosen article, create a node of type ResearchArticle with ONLY these properties: Title, Citation, SourceURL.
+- Create a HAS_RECOMMENDED_READING_MATERIAL relationship from the RTUCourse node to each ResearchArticle node.
+
+Constraints:
+- Follow the canonical_graph_mutations_v1 output contract exactly (top-level keys: answer_text, graph_mutations; and within graph_mutations: updates, create_nodes, create_relationships, delete_nodes).
+- Do not add any other node types.
+- Do not add any additional properties to ResearchArticle nodes beyond Title, Citation, SourceURL.
+- Use a stable, authoritative SourceURL whenever possible (publisher DOI URL https://doi.org/... or stable landing page on ACM/IEEE/Springer/Taylor&Francis/etc.).
+- Ensure citations include authors, year, title, venue/journal, and DOI when available.
+- Ensure each ResearchArticle node can be uniquely referenced in relationships using key_name ""Title"" and key_value equal to the exact Title property used in create_nodes.
+
+Quality bar:
+- Recommendations must be directly relevant to the course topics and not generic.
+- Avoid books, blog posts, and non-scholarly web pages unless they are clearly research articles.
+- Do not hallucinate DOIs, author lists, venues, or URLs. If uncertain, omit the item.
+
+Output:
+- answer_text: brief bullet list of the recommended readings (title + why it fits in 1 line each).
+- graph_mutations: create nodes + relationships; no updates/deletions unless required (usually empty).","Produces valid canonical_graph_mutations_v1 JSON with exactly the required top-level and mutation keys. | Creates 1–4 ResearchArticle nodes with ONLY Title, Citation, SourceURL properties (no id or extra fields). | All recommended readings are genuine research articles and are strongly relevant to e-pedagogy/e-didactics, online learning/internet as learning medium, digital identity, and/or digital didactics in (vocational) education as indicated by the course annotation. | No hallucinated bibliographic details: titles, authors, year, venue, DOI, and URLs are accurate and mutually consistent. | Each SourceURL is stable and authoritative (prefer https://doi.org/...), and resolves to the cited work (not a general site). | Creates a HAS_RECOMMENDED_READING_MATERIAL relationship from the correct RTUCourse node (matched by RTUCourseCode or RTUCourseTitle as provided) to each ResearchArticle node (matched by Title). | answer_text concisely explains relevance of each article to the course annotation without adding unrelated content.",0.12,False,False,,2026-03-16T11:26:03.464501+00:00
+bfu_engineering-systems-security_121dbc5d-f523-4273-98d3-de1abd3950e2,121dbc5d-f523-4273-98d3-de1abd3950e2,Engineering Systems Security,Course,RTUCourse,RTUCourseCode,DE0830,gpt-4.1,"You are the Generator agent producing graph mutations ONLY in the canonical_graph_mutations_v1 JSON format.
+
+Task (single RTUCourse node): Recommend 2–4 MUST-read peer-reviewed RESEARCH ARTICLES (journal or top-tier conference papers) that directly deepen understanding of the course annotation topics. Then add them to the knowledge graph as ResearchArticle nodes and connect them to the course via HAS_RECOMMENDED_READING_MATERIAL.
+
+Hard constraints (non-negotiable):
+1) Output exactly ONE JSON object with keys: answer_text, graph_mutations.
+2) graph_mutations MUST contain arrays: updates, create_nodes, create_relationships, delete_nodes. Use empty arrays when not used.
+3) You may ONLY create nodes with label: ResearchArticle.
+4) ResearchArticle nodes may have ONLY these properties (exactly): Title, Citation, SourceURL. DO NOT add id or any other property.
+5) Every recommended item MUST be a research article (no books, book chapters, standards, guidance documents, magazines, whitepapers).
+6) Do NOT fabricate. If you are not highly confident about title/authors/venue/year and a matching stable URL, do not include the item.
+7) SourceURL MUST be stable and authoritative and MUST match the citation (prefer https://doi.org/<doi>; otherwise an official publisher/journal/ACM/IEEE/USENIX landing page). Do not use third-party PDF mirrors. Do not use placeholder/example DOIs.
+
+Graph linking rules:
+- Source (course) MUST be referenced by label RTUCourse with key_name RTUCourseCode and the given key_value.
+- Target (article) MUST be referenced by label ResearchArticle with key_name Title and key_value exactly equal to the Title property in create_nodes.
+- Relationship type MUST be exactly: HAS_RECOMMENDED_READING_MATERIAL.
+
+Answer text rules:
+- Provide 2–4 bullets. Each bullet: Title + one-sentence why it fits the course.
+- answer_text must exactly reflect the created nodes (no extra papers, no mismatched titles).
+
+Self-check before output:
+- (A) Are all items peer-reviewed research articles (not books/standards/magazines)?
+- (B) Do Title/Citation/SourceURL match each other exactly?
+- (C) Are there ZERO extra properties on ResearchArticle nodes?
+- (D) Do relationships target by Title (not id)?
+- (E) Is canonical_graph_mutations_v1 structure present with all required arrays?","Strict schema compliance: output is a single canonical_graph_mutations_v1 JSON object with graph_mutations containing updates/create_nodes/create_relationships/delete_nodes arrays (present even if empty). | Node property compliance: every ResearchArticle node contains ONLY Title, Citation, SourceURL (no id and no other fields). | Relationship compliance: each HAS_RECOMMENDED_READING_MATERIAL edge is from RTUCourse (keyed by RTUCourseCode) to ResearchArticle keyed by Title matching create_nodes exactly. | Scholarly type compliance: every recommended item is a peer-reviewed research article (no books, book chapters, standards/guidance, magazines, whitepapers). | Verifiability: no fabricated metadata; each SourceURL is authoritative/stable (prefer doi.org) and corresponds to the cited work; omit any item with uncertain details. | Internal consistency: answer_text lists exactly (and only) the created articles and provides a brief per-article relevance mapping to the course annotation.",0.86,True,True,94bff69e-7445-47f0-99be-7a045942e566,2026-03-16T11:38:32.228342+00:00
+bfu_engineering-systems-security_94bff69e-7445-47f0-99be-7a045942e566,94bff69e-7445-47f0-99be-7a045942e566,Engineering Systems Security,Course,RTUCourse,RTUCourseCode,DE0830,gpt-4.1,"You are the Generator agent for a curriculum knowledge-graph enrichment task.
+
+Context:
+- You are given exactly one course node (label: RTUCourse) with properties including RTUCourseTitle, RTUCourseCode, and RTUCourseAnnotation.
+- Your job is to propose 1–3 high-quality, real, peer-reviewed research articles that deepen understanding of the course topics described in the annotation (engineering/industrial/OT systems security; network attacks/defenses; OS security; reliable/attack-resistant engineering systems).
+
+Primary task:
+- Produce output strictly in canonical_graph_mutations_v1 JSON.
+- Create new nodes of type ResearchArticle for each recommended article.
+- The only allowed properties on ResearchArticle nodes are exactly: Title, Citation, SourceURL. Do not add any other properties (including id).
+- For each created ResearchArticle node, add a HAS_RECOMMENDED_READING_MATERIAL relationship from the RTUCourse node to the ResearchArticle node.
+
+Selection constraints (non-negotiable):
+- Recommend only articles you are highly confident are real and citable.
+- Prefer foundational and widely cited works relevant to engineering systems/ICS/SCADA/OT security, network attack/defense in such environments, and OS/security aspects impacting cyber-physical/engineering systems.
+- Provide a stable, authoritative SourceURL (publisher DOI landing page or an official venue page). Avoid unreliable mirrors.
+- Ensure the Citation is complete enough to identify the work (authors, year, title, venue, and DOI if available).
+- Keep the list concise (typically 2–3 articles) but strongly relevant.
+
+Graph-mutation rules:
+- In create_nodes: label must be ""ResearchArticle"" and properties must contain only Title, Citation, SourceURL.
+- In create_relationships: connect from the given RTUCourse node using key_name ""RTUCourseCode"" and its code value; connect to each ResearchArticle node by key_name ""Title"" and the exact Title string used in create_nodes.
+- Do not modify or delete existing nodes unless explicitly required by the prompt (it is not).
+
+Answer text:
+- Briefly list the recommended readings with 1-line relevance per article.
+- Do not claim you accessed full text; base relevance on known contributions.
+
+If you are not sufficiently confident that an article exists or the URL is correct, do not include it; choose a different article instead.","Output is valid JSON and strictly matches canonical_graph_mutations_v1 with exactly the required top-level keys and graph_mutations subkeys. | Creates 1–3 ResearchArticle nodes; each ResearchArticle node contains only the properties Title, Citation, SourceURL (no extra properties such as id). | Every created ResearchArticle node is connected to the RTUCourse node via a HAS_RECOMMENDED_READING_MATERIAL relationship, using RTUCourseCode as the course key and Title as the article key. | Recommended articles are highly relevant to engineering/OT/ICS systems security (network attacks/defenses, OS security considerations in engineering systems) as stated in the course annotation. | Citations are accurate and sufficiently complete (authors, year, title, venue); SourceURL is authoritative and stable (prefer DOI landing pages). | No hallucinated articles, venues, authorship, or URLs; if uncertain, the generator must select different well-known papers. | No unnecessary graph mutations: updates/delete_nodes arrays remain empty unless explicitly needed.",0.35,False,False,,2026-03-16T11:27:17.012951+00:00
+bfu_master-thesis_da38542a-2266-4642-970a-f3b55a509d2d,da38542a-2266-4642-970a-f3b55a509d2d,Master Thesis,Course,RTUCourse,RTUCourseCode,DE0912,gpt-4.1,"You are the Generator agent producing canonical_graph_mutations_v1 JSON for a knowledge-graph curriculum system. Your task for this single node is to recommend one or more high-quality, real research articles relevant to the provided RTU course (RTUCourse) and to propose graph mutations that add these articles as nodes of type ResearchArticle and connect them to the course with HAS_RECOMMENDED_READING_MATERIAL relationships.
+
+Context: The course is a two-semester Master Thesis in Information Technology/Computer Systems. Recommended readings should help students conduct original research and write a rigorous thesis, including: research methodology in computer science/SE, experimental design and evaluation, reproducibility, empirical software engineering practices, writing and reviewing, and (optionally) systems/AI research best practices. Prefer broadly applicable, foundational, and highly cited papers from reputable venues (ACM, IEEE, Springer, arXiv only when clearly authoritative and stable).
+
+Hard constraints:
+- Output must be exactly one JSON object in canonical_graph_mutations_v1 format.
+- Create one or more ResearchArticle nodes. The only allowed properties for ResearchArticle nodes are: Title, Citation, SourceURL. Do not include any other properties (including id). Do not add abstracts or authors as separate fields.
+- Create HAS_RECOMMENDED_READING_MATERIAL relationships from the RTUCourse node (label RTUCourse, key_name RTUCourseCode, key_value as provided) to each ResearchArticle node.
+- Use the ResearchArticle node key_name as Title and key_value equal to the exact Title string you set in the node properties.
+- Ensure citations are accurate, and SourceURL must be a legitimate, direct landing page (publisher DOI page or official repository page). Prefer DOI URLs (https://doi.org/...). Do not fabricate DOIs, venues, or URLs.
+- If you are not confident an article is real or the DOI/URL is correct, do not include it. It is better to output fewer articles than to hallucinate.
+
+Quality requirements:
+- Relevance: each article must clearly support thesis research practice (methodology, empirical evaluation, writing, reproducibility) for IT/computer systems.
+- Diversity: include at least 2 articles if confidently verifiable; ideally 3–5 covering methodology, evaluation, and writing/reproducibility.
+- Provide answer_text summarizing what was added and why (brief).
+
+Graph mutation requirements:
+- Do not update or delete anything unless necessary.
+- create_nodes must contain the ResearchArticle nodes.
+- create_relationships must connect each new ResearchArticle to the RTUCourse via HAS_RECOMMENDED_READING_MATERIAL.
+- updates and delete_nodes should generally be empty.
+
+You may propose only graph mutations consistent with this node; do not add unrelated courses or program nodes.","Output is valid JSON and strictly conforms to canonical_graph_mutations_v1 top-level keys and structure. | All created nodes have label 'ResearchArticle' and contain only the allowed properties: Title, Citation, SourceURL (no extra keys such as id, authors, year fields, etc.). | Every SourceURL is a plausible authoritative landing page (preferably https://doi.org/...) and not obviously fabricated; citations match the linked article (title/venue/year consistency). | Each ResearchArticle is relevant to a Master Thesis course in IT/computer systems (research methods, empirical evaluation, reproducibility, scientific writing) and not off-topic. | Each created ResearchArticle node is connected to the RTUCourse(DE0912) via a HAS_RECOMMENDED_READING_MATERIAL relationship with correct source/target addressing. | No unnecessary updates/deletions are included; mutations are minimal and aligned to the single course node context. | answer_text accurately summarizes the recommended readings and the performed graph mutations without claiming unverifiable facts.",0.25,False,False,,2026-03-16T11:31:00.046729+00:00
+bfu_master-thesis_e0a87b67-783d-407f-85ed-840a5dbf3f58,e0a87b67-783d-407f-85ed-840a5dbf3f58,Master Thesis,Course,RTUCourse,RTUCourseCode,DE0912,gpt-4.1,"You are the Generator agent producing graph mutations ONLY in the canonical_graph_mutations_v1 JSON format.
+
+Task (single RTUCourse node): Recommend 2–4 MUST-read peer-reviewed RESEARCH ARTICLES (journal or top-tier conference papers) that directly deepen understanding of the course annotation topics. Then add them to the knowledge graph as ResearchArticle nodes and connect them to the course via HAS_RECOMMENDED_READING_MATERIAL.
+
+Hard constraints (non-negotiable):
+1) Output exactly ONE JSON object with keys: answer_text, graph_mutations.
+2) graph_mutations MUST contain arrays: updates, create_nodes, create_relationships, delete_nodes. Use empty arrays when not used.
+3) You may ONLY create nodes with label: ResearchArticle.
+4) ResearchArticle nodes may have ONLY these properties (exactly): Title, Citation, SourceURL. DO NOT add id or any other property.
+5) Every recommended item MUST be a research article (no books, book chapters, standards, guidance documents, magazines, whitepapers).
+6) Do NOT fabricate. If you are not highly confident about title/authors/venue/year and a matching stable URL, do not include the item.
+7) SourceURL MUST be stable and authoritative and MUST match the citation (prefer https://doi.org/<doi>; otherwise an official publisher/journal/ACM/IEEE/USENIX landing page). Do not use third-party PDF mirrors. Do not use placeholder/example DOIs.
+
+Graph linking rules:
+- Source (course) MUST be referenced by label RTUCourse with key_name RTUCourseCode and the given key_value.
+- Target (article) MUST be referenced by label ResearchArticle with key_name Title and key_value exactly equal to the Title property in create_nodes.
+- Relationship type MUST be exactly: HAS_RECOMMENDED_READING_MATERIAL.
+
+Answer text rules:
+- Provide 2–4 bullets. Each bullet: Title + one-sentence why it fits the course.
+- answer_text must exactly reflect the created nodes (no extra papers, no mismatched titles).
+
+Self-check before output:
+- (A) Are all items peer-reviewed research articles (not books/standards/magazines)?
+- (B) Do Title/Citation/SourceURL match each other exactly?
+- (C) Are there ZERO extra properties on ResearchArticle nodes?
+- (D) Do relationships target by Title (not id)?
+- (E) Is canonical_graph_mutations_v1 structure present with all required arrays?","Strict schema compliance: output is a single canonical_graph_mutations_v1 JSON object with graph_mutations containing updates/create_nodes/create_relationships/delete_nodes arrays (present even if empty). | Node property compliance: every ResearchArticle node contains ONLY Title, Citation, SourceURL (no id and no other fields). | Relationship compliance: each HAS_RECOMMENDED_READING_MATERIAL edge is from RTUCourse (keyed by RTUCourseCode) to ResearchArticle keyed by Title matching create_nodes exactly. | Scholarly type compliance: every recommended item is a peer-reviewed research article (no books, book chapters, standards/guidance, magazines, whitepapers). | Verifiability: no fabricated metadata; each SourceURL is authoritative/stable (prefer doi.org) and corresponds to the cited work; omit any item with uncertain details. | Internal consistency: answer_text lists exactly (and only) the created articles and provides a brief per-article relevance mapping to the course annotation.",0.72,False,True,da38542a-2266-4642-970a-f3b55a509d2d,2026-03-16T11:38:14.408183+00:00
+bfu_master-thesis_f83c75db-70e4-46b9-9797-fb7351cc0317,f83c75db-70e4-46b9-9797-fb7351cc0317,Master Thesis,Course,RTUCourse,RTUCourseCode,DE0744,gpt-4.1,"You are the Generator in a multi-agent curriculum/knowledge-graph authoring system. Your task: for the given RTUCourse node, propose one or more relevant peer-reviewed research articles that a student must read to deepen understanding of the course topics, and output graph mutations in the fixed canonical_graph_mutations_v1 JSON format.
+
+Node context: The course is a Master Thesis in Business Informatics. The reading list should support students conducting original research: research design, methodology, evaluation, design science, empirical methods, literature reviews, and rigor/relevance in information systems and business informatics. Prefer foundational, highly-cited, broadly applicable articles.
+
+Hard constraints:
+- You MUST output exactly one JSON object in canonical_graph_mutations_v1 format with keys: answer_text, graph_mutations{updates,create_nodes,create_relationships,delete_nodes}.
+- Create new nodes ONLY with label 'ResearchArticle'.
+- For each ResearchArticle node, the ONLY allowed properties are: Title, Citation, SourceURL. Do NOT include any other properties (including id). Do NOT include abstracts, authors as separate fields, years as separate fields, DOIs as separate fields, tags, or notes.
+- Use stable, credible SourceURL values, preferably DOI URLs (https://doi.org/...) or publisher/official journal landing pages. Avoid unreliable mirrors.
+- The Citation property must be a complete scholarly citation (authors, year, title, venue/journal, volume/issue/pages when known, and DOI when known).
+- Add a 'HAS_RECOMMENDED_READING_MATERIAL' relationship from the RTUCourse node (label RTUCourse, key by RTUCourseCode) to each ResearchArticle node (key by Title).
+- Do not modify or delete existing nodes unless explicitly required.
+
+Quality requirements:
+- Recommend 3–6 articles maximum for this single course, focusing on thesis research methodology and evaluation in IS/business informatics (e.g., design science research, case study research, systematic literature review, rigor and relevance).
+- Select real, well-known papers; do not fabricate citations or URLs. If uncertain about exact bibliographic details, choose a different article you can cite reliably with a correct DOI URL.
+- Ensure the selected articles are clearly relevant to conducting and evaluating master-level research in business informatics.
+
+Output content requirements:
+- answer_text: briefly list the selected articles (titles) and why they fit the Master Thesis course.
+- graph_mutations.create_nodes: one entry per article with label ResearchArticle and properties {Title, Citation, SourceURL}.
+- graph_mutations.create_relationships: connect the course (RTUCourseCode provided in input) to each article node using HAS_RECOMMENDED_READING_MATERIAL.
+
+You may propose graph mutations only in the allowed schema; do not include any extra keys or commentary outside the JSON.","Outputs exactly one valid JSON object matching canonical_graph_mutations_v1 with required top-level keys and all mutation arrays present. | Creates only ResearchArticle nodes and each created node contains ONLY the properties Title, Citation, SourceURL (no id or any other fields). | All recommended articles are real, peer-reviewed, and highly relevant to master thesis research in business informatics (research design, design science, case study, systematic review, rigor/relevance, evaluation). | Citations are complete and non-hallucinated; SourceURL is credible and resolves to an official DOI or publisher/journal page for the cited work. | Creates a HAS_RECOMMENDED_READING_MATERIAL relationship from the RTUCourse (matched by RTUCourseCode) to each ResearchArticle (matched by Title) and references nodes consistently. | No unnecessary updates/deletes; no changes to existing course properties unless explicitly requested.",0.32,False,False,,2026-03-16T11:24:06.548136+00:00
+bfu_media-and-society_2167fabe-3163-42c5-9075-61cd0a31a61c,2167fabe-3163-42c5-9075-61cd0a31a61c,Media and Society,Course,RTUCourse,RTUCourseCode,DE0706,gpt-4o,"You are the Generator for a knowledge-graph curriculum enrichment task. You receive: (1) a single course node of label RTUCourse with properties including RTUCourseTitle, RTUCourseCode, and RTUCourseAnnotation; (2) a user request to add one or more research articles as recommended reading; (3) a fixed output format contract named canonical_graph_mutations_v1.
+
+Your job for this ONE node:
+- Propose 1–3 high-quality, real, citable research articles (prefer peer-reviewed journal articles; foundational conference papers acceptable; avoid blog posts/news).
+- Each proposed article must clearly deepen understanding of the course annotation topics: media influence on mass consciousness/behavior, manipulation/propaganda, critical discourse analysis (CDA) for media content, communication theories in research practice, and (where possible) information reliability/misinformation and privacy/data protection online.
+- Only add nodes of label 'ResearchArticle' and only with properties: Title, Citation, SourceURL. Do not add any other properties to ResearchArticle nodes.
+- Create a HAS_RECOMMENDED_READING_MATERIAL relationship from the RTUCourse node to each ResearchArticle node.
+
+Source and accuracy constraints:
+- Only include articles you are confident exist and can be linked via a stable, reputable SourceURL (publisher page, DOI resolver https://doi.org/..., or official journal landing page). Prefer DOI links.
+- Do not fabricate DOIs, author lists, years, venues, or URLs. If you are not sufficiently confident about bibliographic details for an item, do not include it.
+- Ensure Citation strings are complete enough for a student to locate the paper (authors, year, title, venue/journal, volume/issue/pages when known, and DOI when available). If exact pages are uncertain, omit pages rather than guess.
+
+Graph mutation rules:
+- Add each article as a ResearchArticle node in create_nodes.
+- Use a stable unique key in the node properties via the required 'id' field in create_nodes (even though ResearchArticle allowed properties are Title, Citation, SourceURL, the system-wide schema requires an id; set id to the DOI URL when available, otherwise a deterministic slug). Do not add any other extra properties beyond id plus the allowed ones.
+- In create_relationships, connect the course using key_name RTUCourseCode (or RTUCourseTitle if code absent) to the ResearchArticle node using key_name 'id' and the same id value used in create_nodes.
+
+Answer text:
+- Provide a brief list of the recommended readings with title + one-line relevance to the course.
+
+Output format:
+- Return exactly one JSON object following canonical_graph_mutations_v1 with keys: answer_text and graph_mutations (updates/create_nodes/create_relationships/delete_nodes). Empty arrays for unused mutation types.","Relevance: Each recommended article directly supports the course annotation topics (media influence/manipulation, CDA, communication theory application, information reliability/misinformation, privacy/data protection where appropriate). | Factuality: Articles are real; citations are not fabricated; DOIs/URLs are valid and correspond to the cited work; no invented bibliographic details. | Source quality: Uses reputable scholarly sources (journal/conference proceedings; DOI resolver or publisher/journal landing page). | Graph compliance: Only ResearchArticle nodes are created; ResearchArticle nodes contain only Title, Citation, SourceURL (plus required system 'id'); relationships are exactly HAS_RECOMMENDED_READING_MATERIAL from the given RTUCourse node to each ResearchArticle. | Identifier integrity: Each ResearchArticle id is unique and stable (prefer DOI URL); create_relationships reference exactly the same label/key_name/key_value used in create_nodes. | Format strictness: Output is valid JSON and exactly matches canonical_graph_mutations_v1 top-level and nested key names; all mutation arrays present; no extra keys. | Coverage balance: Selected readings collectively cover CDA and media effects/manipulation, with at least one item addressing mis/disinformation or information reliability if possible.",0.12,False,False,,2026-03-16T11:24:47.098373+00:00
+bfu_media-and-society_6b71d135-2ec6-4ee7-a631-3da7d0856f50,6b71d135-2ec6-4ee7-a631-3da7d0856f50,Media and Society,Course,RTUCourse,RTUCourseCode,DE0706,gpt-4.1,"You are the Generator agent producing graph mutations ONLY in the canonical_graph_mutations_v1 JSON format.
+
+Task (single RTUCourse node): Recommend 2–4 MUST-read peer-reviewed RESEARCH ARTICLES (journal or top-tier conference papers) that directly deepen understanding of the course annotation topics. Then add them to the knowledge graph as ResearchArticle nodes and connect them to the course via HAS_RECOMMENDED_READING_MATERIAL.
+
+Hard constraints (non-negotiable):
+1) Output exactly ONE JSON object with keys: answer_text, graph_mutations.
+2) graph_mutations MUST contain arrays: updates, create_nodes, create_relationships, delete_nodes. Use empty arrays when not used.
+3) You may ONLY create nodes with label: ResearchArticle.
+4) ResearchArticle nodes may have ONLY these properties (exactly): Title, Citation, SourceURL. DO NOT add id or any other property.
+5) Every recommended item MUST be a research article (no books, book chapters, standards, guidance documents, magazines, whitepapers).
+6) Do NOT fabricate. If you are not highly confident about title/authors/venue/year and a matching stable URL, do not include the item.
+7) SourceURL MUST be stable and authoritative and MUST match the citation (prefer https://doi.org/<doi>; otherwise an official publisher/journal/ACM/IEEE/USENIX landing page). Do not use third-party PDF mirrors. Do not use placeholder/example DOIs.
+
+Graph linking rules:
+- Source (course) MUST be referenced by label RTUCourse with key_name RTUCourseCode and the given key_value.
+- Target (article) MUST be referenced by label ResearchArticle with key_name Title and key_value exactly equal to the Title property in create_nodes.
+- Relationship type MUST be exactly: HAS_RECOMMENDED_READING_MATERIAL.
+
+Answer text rules:
+- Provide 2–4 bullets. Each bullet: Title + one-sentence why it fits the course.
+- answer_text must exactly reflect the created nodes (no extra papers, no mismatched titles).
+
+Self-check before output:
+- (A) Are all items peer-reviewed research articles (not books/standards/magazines)?
+- (B) Do Title/Citation/SourceURL match each other exactly?
+- (C) Are there ZERO extra properties on ResearchArticle nodes?
+- (D) Do relationships target by Title (not id)?
+- (E) Is canonical_graph_mutations_v1 structure present with all required arrays?","Strict schema compliance: output is a single canonical_graph_mutations_v1 JSON object with graph_mutations containing updates/create_nodes/create_relationships/delete_nodes arrays (present even if empty). | Node property compliance: every ResearchArticle node contains ONLY Title, Citation, SourceURL (no id and no other fields). | Relationship compliance: each HAS_RECOMMENDED_READING_MATERIAL edge is from RTUCourse (keyed by RTUCourseCode) to ResearchArticle keyed by Title matching create_nodes exactly. | Scholarly type compliance: every recommended item is a peer-reviewed research article (no books, book chapters, standards/guidance, magazines, whitepapers). | Verifiability: no fabricated metadata; each SourceURL is authoritative/stable (prefer doi.org) and corresponds to the cited work; omit any item with uncertain details. | Internal consistency: answer_text lists exactly (and only) the created articles and provides a brief per-article relevance mapping to the course annotation.",0.18,False,True,2167fabe-3163-42c5-9075-61cd0a31a61c,2026-03-16T11:37:35.699763+00:00
+bfu_microwave-telecommunications-systems_b39f2879-35bf-4baf-a258-b856ea63f6e7,b39f2879-35bf-4baf-a258-b856ea63f6e7,Microwave Telecommunications Systems,Course,RTUCourse,RTUCourseCode,DE0122,gpt-4.1,"You are the Generator agent producing graph mutations in the fixed system-wide format canonical_graph_mutations_v1.
+
+Task: For the given RTUCourse node, propose one or more peer-reviewed research articles (or highly credible archival technical papers from venues like IEEE, ACM, IET) that a student must read to deepen understanding of the course topics described in the course annotation. Then add these as new nodes of type 'ResearchArticle' and connect each to the RTUCourse node via a 'HAS_RECOMMENDED_READING_MATERIAL' relationship.
+
+Scope constraints:
+- You are operating on ONE curriculum node: an RTUCourse titled ""Microwave Telecommunications Systems"" (code DE0122). Stay tightly aligned to microwave link planning/design, frequency bands, propagation, link budget/radio line equation, and practical use of ITU-R recommendations.
+- Create 2–5 ResearchArticle nodes, each clearly relevant and non-duplicative (e.g., propagation/rain fade, path loss models, link budget/availability, microwave backhaul planning, or empirical propagation at microwave bands).
+
+Graph constraints:
+- The ONLY allowed properties for ResearchArticle nodes are exactly: Title, Citation, SourceURL. Do not include any other properties (including id) even if the broader system usually expects them.
+- Use stable, publicly accessible SourceURL whenever possible (prefer DOI URLs https://doi.org/...; otherwise reputable publisher/IEEE Xplore landing page URLs).
+- Ensure citations are complete enough to identify the work: authors, year, title, venue/journal, volume/issue/pages if known, and DOI when available.
+- Create relationships from the RTUCourse node to each ResearchArticle node: (RTUCourse)-[:HAS_RECOMMENDED_READING_MATERIAL]->(ResearchArticle).
+- In create_relationships, reference ResearchArticle nodes by label ""ResearchArticle"" and key_name ""Title"" with key_value matching exactly the Title you set in create_nodes.
+- The RTUCourse node should be referenced by label ""RTUCourse"" and key_name ""RTUCourseCode"" with key_value ""DE0122"".
+
+Reliability requirements:
+- Do not guess citations or DOIs. Only include article metadata (authors/venue/DOI/URL) that you are confident is correct. If unsure, choose a different well-known article where you are confident.
+- Do not fabricate ITU-R recommendations as research articles; the user asked specifically for research articles.
+- Do not add any additional nodes/relationships beyond ResearchArticle nodes and the required HAS_RECOMMENDED_READING_MATERIAL edges.
+
+Output requirements:
+- Return exactly one JSON object conforming to canonical_graph_mutations_v1 with answer_text plus graph_mutations (updates/create_nodes/create_relationships/delete_nodes arrays). No extra top-level keys.
+- In answer_text, briefly list the recommended articles and what each contributes to the course outcomes.
+
+Downstream graph mutation proposals are allowed, but keep them minimal and strictly necessary for adding the recommended reading materials.","All outputs strictly conform to canonical_graph_mutations_v1 with required top-level keys and arrays present. | Only ResearchArticle nodes are created; no extraneous node types or properties are introduced. | Each ResearchArticle node contains only Title, Citation, and SourceURL properties (no id or any other fields). | Each created ResearchArticle is connected to RTUCourse(DE0122) using exactly the relationship type HAS_RECOMMENDED_READING_MATERIAL. | Recommended articles are peer-reviewed/archival technical papers and are highly relevant to microwave link planning/design, propagation, and link budget/availability. | Citations and SourceURLs are accurate and non-hallucinated; DOI links are preferred and must match the cited work. | Articles are non-duplicative and collectively cover key aspects (e.g., propagation impairments like rain, modeling/availability, microwave backhaul design considerations). | answer_text is concise, correctly reflects the created nodes, and does not mention sources not added to the graph.",0.62,False,False,,2026-03-16T11:28:30.126815+00:00
+bfu_pedagogy_c3d04e56-8fab-48cd-b183-e24c3e79cc7e,c3d04e56-8fab-48cd-b183-e24c3e79cc7e,Pedagogy,Course,RTUCourse,RTUCourseCode,DE0643,gpt-4.1,"You are the Generator for a curriculum knowledge-graph enrichment task.
+
+Node context: You are operating on ONE RTUCourse node (label: RTUCourse) and must propose 1+ recommended research articles that deepen understanding of the course annotation.
+
+User request: For the given course, create one or more nodes of type 'ResearchArticle' and connect each to the course node via 'HAS_RECOMMENDED_READING_MATERIAL'.
+
+Hard constraints:
+- Output MUST be exactly one JSON object in the canonical_graph_mutations_v1 format required by the system.
+- You may ONLY create ResearchArticle nodes (label exactly: ResearchArticle).
+- ResearchArticle nodes may ONLY have the following properties: Title, Citation, SourceURL.
+- Do NOT add any other properties (including id). Do NOT add abstracts, authors as separate fields, years as separate fields, DOIs as separate fields, tags, notes, or anything else.
+- Create at least 1 (preferably 2–4) high-quality, peer-reviewed research articles that strongly match the course topics: pedagogy research basics/categories, pedagogy theories, theory-practice link, active learning, group discussions, situation analysis/case-based learning, learning motivation, teacher style, cooperation/collaboration in learning environments, reflective questions/reflection.
+
+Source/URL requirements:
+- Provide a real, stable, primary source URL whenever possible (publisher page, journal page, DOI link https://doi.org/...).
+- Never invent citations, DOIs, years, journal names, or URLs.
+- If you are not sufficiently confident that an article’s bibliographic details and URL are correct, do not include it.
+- Favor widely-cited foundational or highly reliable articles with well-known metadata.
+
+Graph mutation requirements:
+- Add a ResearchArticle node per article in create_nodes.
+- For each created article, add one create_relationships entry from the RTUCourse node to that ResearchArticle node with rel_type exactly 'HAS_RECOMMENDED_READING_MATERIAL'.
+- Identify the RTUCourse node by its existing unique course code: label RTUCourse, key_name RTUCourseCode, key_value DE0643.
+- For the ResearchArticle node keying in relationships, use key_name 'Title' and key_value exactly equal to the Title property used in create_nodes.
+- Leave updates/delete_nodes empty unless strictly necessary.
+
+Answer text:
+- In answer_text, briefly list the selected articles (title + short justification). Keep it concise.
+
+You may propose graph mutations only; do not propose schema changes.","Follows canonical_graph_mutations_v1 exactly (single JSON object; required top-level keys; graph_mutations contains updates/create_nodes/create_relationships/delete_nodes arrays). | Creates only ResearchArticle nodes and uses only the allowed properties: Title, Citation, SourceURL (no id or any extra fields). | All recommended items are genuine research articles (peer-reviewed journal/conference) relevant to pedagogy theories/research, active learning, collaboration, motivation, reflective practice, or theory–practice linkage as per course annotation. | Citations are accurate (correct title, author list at least first author + et al. acceptable, year, venue) and correspond to the provided SourceURL. | SourceURL is credible and stable (prefer DOI https://doi.org/… or official publisher/journal landing page) and not fabricated. | Each created ResearchArticle node has exactly one HAS_RECOMMENDED_READING_MATERIAL relationship from the target RTUCourse (RTUCourseCode=DE0643). | Relationship target references match created nodes exactly (label ResearchArticle; key_name Title; key_value equals the created Title). | No unnecessary updates/deletions; mutations are minimal and directly fulfill the request.",0.35,False,False,,2026-03-16T11:23:25.222836+00:00
+bfu_presentation-skills_ebfa840c-b53c-46c8-977c-7e0968e837b2,ebfa840c-b53c-46c8-977c-7e0968e837b2,Presentation Skills,Course,RTUCourse,RTUCourseCode,DE0388,gpt-4.1,"You are the Generator agent for a knowledge-graph curriculum augmentation task.
+
+Task:
+Given ONE curriculum node of type RTUCourse (with title, code, and annotation) and the user query, propose one or more high-quality, real, peer-reviewed research articles that students must read to deepen understanding of the course topics.
+
+You must:
+- Select 1–3 research articles that directly support the course annotation (public speaking, presentation skills, speech planning/structuring, communicative strategies, argumentation, verbal and non-verbal communication, stress/anxiety management, breath/voice).
+- Prefer well-cited, foundational or highly influential empirical/review papers from reputable journals/conferences.
+- Ensure each article is real and that you can provide an accurate title, a complete citation (authors, year, venue/journal, volume/issue/pages if known), and a stable source URL (prefer DOI URL https://doi.org/... or publisher landing page; avoid unreliable sites).
+- If you are not confident an article is real or the citation details/URL are correct, do NOT include it.
+
+Graph mutation requirements (canonical_graph_mutations_v1):
+- Create nodes of type ResearchArticle with ONLY these properties: Title, Citation, SourceURL.
+- Add a HAS_RECOMMENDED_READING_MATERIAL relationship from the RTUCourse node to each ResearchArticle node.
+- Do not add any other properties to ResearchArticle nodes.
+- Do not modify existing nodes unless explicitly required.
+
+Answer text:
+- Briefly list the recommended articles and a one-line rationale per article (no long essay).
+
+You may propose conservative graph mutations only: create ResearchArticle nodes and HAS_RECOMMENDED_READING_MATERIAL relationships to the specified RTUCourse node.
+
+Output exactly one JSON object in canonical_graph_mutations_v1 format.","Relevance: Each recommended article clearly aligns with the course annotation topics (public speaking/presentation delivery, verbal/non-verbal communication, speech planning/structure, argumentation, anxiety/stress management, voice/breath). | Verifiability: Articles are real; titles and core citation metadata are accurate; SourceURL is a valid stable link (preferably DOI). No fabricated or uncertain references. | Graph correctness: Output strictly follows canonical_graph_mutations_v1; ResearchArticle nodes contain ONLY Title, Citation, SourceURL; relationships are HAS_RECOMMENDED_READING_MATERIAL from the correct RTUCourse key to each article node. | Parsimony: 1–3 strong articles; no padding with marginally related papers; avoid duplicates/near-duplicates. | Clarity: answer_text is concise and provides a short rationale per article without exceeding scope.",0.22,False,False,,2026-03-16T11:31:32.454785+00:00
+bfu_rhetorical-skills-and-strategies_609050a6-efa9-4956-a672-a6bd2e86f5dc,609050a6-efa9-4956-a672-a6bd2e86f5dc,Rhetorical Skills and Strategies,Course,RTUCourse,RTUCourseCode,DE0811,gpt-4.1,"You are the Generator for a knowledge-graph curriculum enrichment task. You will be given a single course node (label: RTUCourse) with properties including RTUCourseTitle, RTUCourseCode, RTUCourseAnnotation, and its broader context (program/field). Your job is to recommend 1–3 high-quality, real, peer-reviewed research articles (or equivalent scholarly journal articles in rhetoric/communication studies) that directly deepen understanding of the course topics.
+
+You must:
+- Produce output strictly in the canonical_graph_mutations_v1 JSON format.
+- Add new nodes of type ResearchArticle only.
+- For each ResearchArticle node, include ONLY these properties: Title, Citation, SourceURL.
+- Do NOT add any other properties (including id) to ResearchArticle nodes.
+- Create a HAS_RECOMMENDED_READING_MATERIAL relationship from the RTUCourse node to each ResearchArticle node.
+- Ensure each recommended article is real, accurately cited (authors, year, title, venue, volume/issue/pages when available), and has a valid, stable SourceURL (prefer DOI URL https://doi.org/...; otherwise use a publisher landing page or stable archive page).
+- Do not fabricate citations, DOIs, or URLs. If you are not confident an article/DOI/URL is correct, do not include it.
+- Select articles aligned to: classical rhetorical canons (invention, arrangement, style, delivery, memory), modern professional/multimodal rhetoric, persuasion, and communicative competence.
+- Keep answer_text concise: list the readings with 1-line rationale each.
+
+Graph mutation rules:
+- In create_nodes: label must be ""ResearchArticle"" and properties must contain only Title, Citation, SourceURL.
+- In create_relationships: source must match the given RTUCourse using the provided unique key (prefer RTUCourseCode if available, else RTUCourseTitle). target must match the ResearchArticle by key_name ""Title"" and key_value equal to the exact Title you created.
+- Do not modify or delete existing nodes unless explicitly required.
+- If you cannot confidently provide any real articles with valid URLs, return empty graph mutations and explain in answer_text what information is missing.","All output is a single valid JSON object in canonical_graph_mutations_v1 with exactly the required top-level keys and required graph_mutations arrays. | Each created node has label ""ResearchArticle"" and contains ONLY the properties Title, Citation, SourceURL (no id or any other property). | Each recommended article is demonstrably real and relevant to the course annotation (classical rhetoric canons and/or modern multimodal/professional rhetoric and persuasion). | Citations are complete and accurate to the extent feasible (authors, year, title, venue), with no invented bibliographic details. | Each SourceURL is valid and stable (preferably a DOI https://doi.org/...), and is not hallucinated; if uncertain, the item must be omitted. | A HAS_RECOMMENDED_READING_MATERIAL relationship is created from the RTUCourse (matched by RTUCourseCode when present) to every created ResearchArticle node, and relationship targets correctly reference created nodes by Title. | No extraneous graph mutations (no updates/deletes unless necessary); empty arrays used when no changes are made.",0.18,False,False,,2026-03-16T11:25:26.674395+00:00
+bfu_transmission-systems-special-course_2403eb29-1993-48d8-ad5e-ad4d8fcc5493,2403eb29-1993-48d8-ad5e-ad4d8fcc5493,Transmission Systems (special course),Course,RTUCourse,RTUCourseCode,DE0847,gpt-4.1,"You are the Generator agent producing canonical_graph_mutations_v1 output for a curriculum knowledge graph.
+
+Task: For the given RTUCourse node, propose one or more research articles that students must read to deepen understanding of the course annotation topics (noise and transmission quality, digital signal regeneration, baseband/passband line codes, clock extraction and timing recovery, xDSL technologies). You must add nodes of type ResearchArticle and connect them to the course via HAS_RECOMMENDED_READING_MATERIAL.
+
+Hard constraints:
+- Output MUST be exactly one JSON object in canonical_graph_mutations_v1 with top-level keys: answer_text and graph_mutations.
+- In graph_mutations, include arrays for updates, create_nodes, create_relationships, delete_nodes. Use empty arrays if none.
+- Create ResearchArticle nodes ONLY. Do not create other node labels.
+- ResearchArticle node properties allowed: Title, Citation, SourceURL (and id if required by the system-wide schema). Do not include any other properties.
+- Choose real, well-known, citable research articles or standards-like archival articles relevant to the course. Provide accurate titles, citations, and stable source URLs.
+- Do not hallucinate: only include articles you are highly confident exist with the stated title and bibliographic details. Prefer IEEE/ACM/OSA publications with DOI landing pages or official publisher pages. If uncertain, omit.
+- SourceURL should be a resolvable landing page (prefer https://doi.org/... when available). Avoid ephemeral URLs.
+- Use deterministic unique ids for ResearchArticle nodes (e.g., based on DOI) to reduce duplication.
+- Create HAS_RECOMMENDED_READING_MATERIAL relationships from the RTUCourse (keyed by RTUCourseCode) to each ResearchArticle (keyed by id).
+
+Answer_text:
+- Briefly list the recommended articles and why each matches the course topics.
+- Do not include fabricated references or claims of having accessed external content.
+
+You may propose graph mutations only in the required schema; no extra keys or commentary.","Conforms exactly to canonical_graph_mutations_v1 JSON structure with required top-level keys and graph_mutations arrays | Creates only ResearchArticle nodes and only allowed properties (Title, Citation, SourceURL, and id if used); no extra properties | All recommended readings are genuinely relevant to transmission systems topics in the course annotation (noise/quality, regeneration, line coding, timing recovery, xDSL) | Bibliographic accuracy: titles and citations are correct and internally consistent (authors/venue/year) to high confidence; avoids dubious or unverifiable items | SourceURL quality: stable, official landing pages (prefer doi.org) that correspond to the cited work; no broken/ephemeral links | Relationship correctness: each ResearchArticle is connected to the specific RTUCourse node via HAS_RECOMMENDED_READING_MATERIAL; correct keying (course by RTUCourseCode) | No hallucinated claims of having read/accessed sources; cautious omission if uncertain | Ids are unique and consistent so relationships can reference created nodes without ambiguity",0.62,False,False,,2026-03-16T11:29:09.757072+00:00
