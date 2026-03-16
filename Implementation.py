@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 from __future__ import annotations
 
 import json
@@ -17,8 +16,6 @@ from openai import OpenAI
 
 
 # USER-DEFINED EXECUTION VARIABLES
-
-
 USER_QUERY = (
     ""
 )
@@ -28,8 +25,6 @@ PROPAGATION_THRESHOLD = 0.70
 
 
 # CONFIGURATION
-
-
 LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO").upper()
 logging.basicConfig(
     level=LOG_LEVEL,
@@ -163,8 +158,6 @@ CANONICAL_GENERATOR_JSON_SCHEMA = """
 
 
 # TYPES
-
-
 Level = Literal["All", "StudyField", "Program", "Course", "Topic"]
 
 
@@ -270,8 +263,6 @@ class PropagationRecord:
 
 
 # HELPERS
-
-
 def utc_now_iso() -> str:
     return datetime.now(timezone.utc).isoformat()
 
@@ -827,8 +818,6 @@ def detect_rule_based_routing(user_query: str) -> Optional[RoutingDecision]:
 
 
 # PROMPT ARCHIVE
-
-
 class PromptArchive:
     def __init__(self, root: str = PROMPT_LOG_ROOT, run_id: Optional[str] = None) -> None:
         self.root = Path(root)
@@ -927,8 +916,6 @@ class RunStateStore:
 
 
 # OPENAI WRAPPER
-
-
 class OpenAIService:
     def __init__(self) -> None:
         api_key = os.getenv("OPENAI_API_KEY")
@@ -1015,8 +1002,6 @@ Expected JSON contract:
 
 
 # NEO4J REPOSITORY
-
-
 class Neo4jRepository:
     def __init__(self) -> None:
         uri = os.getenv("NEO4J_URI")
@@ -1426,7 +1411,7 @@ class Neo4jRepository:
     def get_all_curriculum_nodes(self) -> List[CandidateNode]:
         out = []
         for level in ["StudyField", "Program", "Course", "Topic"]:
-            out.extend(self.get_nodes_by_level(level))  # type: ignore[arg-type]
+            out.extend(self.get_nodes_by_level(level))
         return out
 
     def update_node_properties(
@@ -1531,8 +1516,6 @@ class Neo4jRepository:
 
 
 # FRACTAL MANAGER
-
-
 class FractalManager:
     def __init__(self, llm: OpenAIService, repo: Neo4jRepository, archive: PromptArchive) -> None:
         self.llm = llm
@@ -1658,8 +1641,6 @@ Rules:
 
 
 # ORCHESTRATOR / GENERATOR / EVALUATOR / REPORTER
-
-
 class Orchestrator:
     def __init__(self, llm: OpenAIService, archive: PromptArchive) -> None:
         self.llm = llm
@@ -2216,8 +2197,6 @@ class Reporter:
 
 
 # FRACTAL UNIT
-
-
 class FractalUnit:
     def __init__(
         self,
@@ -2319,8 +2298,6 @@ class FractalUnit:
 
 
 # FRACTAL LEVEL MANAGER
-
-
 class FractalLevelManager:
     def __init__(
         self,
@@ -2721,8 +2698,6 @@ Return ONLY JSON.
 
 
 # SYSTEM FACADE
-
-
 class FSALMaS:
     def __init__(self) -> None:
         self.llm = OpenAIService()
@@ -2945,8 +2920,6 @@ Requirements:
 
 
 # MAIN
-
-
 def main() -> int:
     system = FSALMaS()
 
