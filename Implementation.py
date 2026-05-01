@@ -32,8 +32,10 @@ logging.basicConfig(
 )
 logger = logging.getLogger("fsa_lmas")
 
-ROUTER_MODEL = os.getenv("ROUTER_MODEL", "gpt-5.2")
-ORCHESTRATOR_MODEL = os.getenv("ORCHESTRATOR_MODEL", "gpt-5.2")
+ROUTER_MODEL = "gpt-5.2"
+ORCHESTRATOR_MODEL = "gpt-5.2"
+ROUTER_TEMPERATURE = 0.2
+ORCHESTRATOR_TEMPERATURE = 0.2
 GENERATOR_MODEL_DEFAULT = os.getenv("GENERATOR_MODEL_DEFAULT", "gpt-5.2")
 EVALUATOR_MODEL = os.getenv("EVALUATOR_MODEL", "gpt-5.2")
 CHANGE_MANAGER_MODEL = os.getenv("CHANGE_MANAGER_MODEL", "gpt-5.2")
@@ -666,156 +668,6 @@ def normalize_text(text: str) -> str:
     return re.sub(r"\s+", " ", (text or "").strip().lower())
 
 
-def contains_any(text: str, phrases: List[str]) -> bool:
-    return any(p in text for p in phrases)
-
-
-def detect_rule_based_routing(user_query: str) -> Optional[RoutingDecision]:
-    q = normalize_text(user_query)
-
-    asks_all = contains_any(
-        q,
-        [
-            "all",
-            "across the curriculum",
-            "entire curriculum",
-            "whole curriculum",
-            "curriculum-wide",
-            "curriculum wide",
-            "every",
-            "for each",
-            "each",
-        ],
-    )
-
-    course_scope = contains_any(
-        q,
-        [
-            "course",
-            "courses",
-            "course annotation",
-            "course annotations",
-            "syllabus",
-            "syllabi",
-        ],
-    )
-
-    program_scope = contains_any(
-        q,
-        [
-            "program",
-            "programs",
-            "programme",
-            "programmes",
-        ],
-    )
-
-    topic_scope = contains_any(
-        q,
-        [
-            "topic",
-            "topics",
-        ],
-    )
-
-    field_scope = contains_any(
-        q,
-        [
-            "study field",
-            "study fields",
-            "field of study",
-            "fields of study",
-        ],
-    )
-
-    mass_update = contains_any(
-        q,
-        [
-            "revise",
-            "update",
-            "augment",
-            "improve",
-            "rewrite",
-            "assess",
-            "evaluate",
-            "align",
-            "add recommended research articles",
-            "add references",
-            "add articles",
-            "define one or more research articles",
-            "research articles",
-            "must read",
-        ],
-    )
-
-    if asks_all and course_scope and mass_update:
-        return RoutingDecision(
-            scope_level="Course",
-            specific=False,
-            applies_to_entire_scope=True,
-            target_label=None,
-            target_key_name=None,
-            target_key_value=None,
-            rationale="Rule-based routing: broad curriculum-wide course request detected.",
-        )
-
-    if asks_all and program_scope and mass_update:
-        return RoutingDecision(
-            scope_level="Program",
-            specific=False,
-            applies_to_entire_scope=True,
-            target_label=None,
-            target_key_name=None,
-            target_key_value=None,
-            rationale="Rule-based routing: broad program-wide request detected.",
-        )
-
-    if asks_all and topic_scope and mass_update:
-        return RoutingDecision(
-            scope_level="Topic",
-            specific=False,
-            applies_to_entire_scope=True,
-            target_label=None,
-            target_key_name=None,
-            target_key_value=None,
-            rationale="Rule-based routing: broad topic-wide request detected.",
-        )
-
-    if asks_all and field_scope and mass_update:
-        return RoutingDecision(
-            scope_level="StudyField",
-            specific=False,
-            applies_to_entire_scope=True,
-            target_label=None,
-            target_key_name=None,
-            target_key_value=None,
-            rationale="Rule-based routing: broad study-field-wide request detected.",
-        )
-
-    if asks_all and mass_update and contains_any(
-        q,
-        [
-            "curriculum",
-            "curriculum-wide",
-            "curriculum wide",
-            "across the curriculum",
-            "entire curriculum",
-            "whole curriculum",
-        ],
-    ):
-        return RoutingDecision(
-            scope_level="All",
-            specific=False,
-            applies_to_entire_scope=True,
-            target_label=None,
-            target_key_name=None,
-            target_key_value=None,
-            rationale="Rule-based routing: broad curriculum-wide multi-level request detected.",
-        )
-
-    return None
-
-
 
 # PROMPT ARCHIVE
 class PromptArchive:
@@ -949,12 +801,18 @@ class OpenAIService:
         instructions: str,
         input_text: str,
         max_output_tokens: int = 2500,
+        temperature: Optional[float] = None,
     ) -> str:
+        request_kwargs = {
+            "model": model,
+            "instructions": instructions,
+            "input": input_text,
+            "max_output_tokens": max_output_tokens,
+        }
+        if temperature is not None:
+            request_kwargs["temperature"] = temperature
         response = self.client.responses.create(
-            model=model,
-            instructions=instructions,
-            input=input_text,
-            max_output_tokens=max_output_tokens,
+            **request_kwargs,
         )
         return self._extract_text(response)
 
@@ -967,6 +825,7 @@ class OpenAIService:
         json_schema_description: str,
         max_output_tokens: int = 2500,
         retries: int = 2,
+        temperature: Optional[float] = None,
     ) -> Dict[str, Any]:
         final_instructions = f"""
 {instructions}
@@ -988,6 +847,7 @@ Expected JSON contract:
                 instructions=final_instructions,
                 input_text=input_text,
                 max_output_tokens=max_output_tokens,
+                temperature=temperature,
             )
             last_raw = raw
             try:
@@ -1526,18 +1386,6 @@ class FractalManager:
         manager_id = uuid.uuid4().hex[:10]
         mdir = self.archive.manager_dir("fractal_manager", manager_id)
 
-        rule_based = detect_rule_based_routing(user_query)
-        if rule_based is not None:
-            self.archive.save_interaction(
-                mdir,
-                "routing_rule_based",
-                instructions="Apply rule-based routing before LLM routing.",
-                input_payload={"user_query": user_query},
-                output_payload=asdict(rule_based),
-                metadata={"component": "fractal_manager"},
-            )
-            return rule_based
-
         candidates = self.repo.search_candidates(user_query, limit_per_label=50)
 
         instructions = """
@@ -1584,6 +1432,7 @@ Rules:
             input_text=json.dumps(payload, ensure_ascii=False, indent=2),
             json_schema_description=schema,
             max_output_tokens=1200,
+            temperature=ROUTER_TEMPERATURE,
         )
 
         self.archive.save_interaction(
@@ -1698,6 +1547,7 @@ Important:
             input_text=json.dumps(payload, ensure_ascii=False, indent=2),
             json_schema_description=schema,
             max_output_tokens=1800,
+            temperature=ORCHESTRATOR_TEMPERATURE,
         )
 
         saved_output = dict(raw)
